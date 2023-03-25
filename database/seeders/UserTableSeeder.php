@@ -1,0 +1,48 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
+class UserTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        //
+        $user = User::factory(11)->create();
+
+        $admin = User::first();
+        $admin->name = 'Administrator';
+        $admin->email = 'admin@gmail.com';
+        $admin->password = Hash::make('123456');
+        $admin->role_id = 1;
+        $admin->save();
+
+        $komputer = User::findOrfail(2);
+        $komputer->name = 'D3 Teknik Komputer';
+        $komputer->email = 'teknik.komputer@gmail.com';
+        $komputer->password = Hash::make('komputer');
+        $komputer->role_id = 2;
+        $komputer->save();
+
+        $elektro = User::findOrfail(3);
+        $elektro->name = 'D3 Teknik Elektro';
+        $elektro->email = 'teknik.elektro@gmail.com';
+        $elektro->password = Hash::make('elektro');
+        $elektro->role_id = 2;
+        $elektro->save();
+
+        $informatika = User::findOrfail(4);
+        $informatika->name = 'D4 Teknik informatika';
+        $informatika->email = 'teknik.informatika@gmail.com';
+        $informatika->password = Hash::make('informatika');
+        $informatika->role_id = 2;
+        $informatika->save();
+    }
+}
