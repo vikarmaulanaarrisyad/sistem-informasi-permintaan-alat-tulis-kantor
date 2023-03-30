@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     DashboardController,
     SatuanController,
     SemesterController,
+    SupplierController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,10 @@ Route::group([
         Route::get('/semester/data', [SemesterController::class, 'data'])->name('semester.data');
         Route::resource('/semester', SemesterController::class)->except('create', 'edit');
         Route::put('/semester/{id}/update-status', [SemesterController::class, 'updateStatus'])->name('semester.update_status');
+
+        // route supplier
+        Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
+        Route::resource('/supplier', SupplierController::class)->except('create', 'edit');
 
         // route satuan / units
         Route::get('/satuan/data', [SatuanController::class, 'data'])->name('satuan.data');

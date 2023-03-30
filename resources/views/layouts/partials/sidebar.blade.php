@@ -51,14 +51,16 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/charts/chartjs.html" class="nav-link">
+                        <a href="{{ route('supplier.index') }}"
+                            class="nav-link {{ request()->is('supplier*') ? 'active' : '' }}">
                             <i class="fas fa-users nav-icon"></i>
                             <p>Supplier</p>
                         </a>
                     </li>
                     <li
                         class="nav-item {{ request()->is(['satuan', 'jenis-barang']) ? 'menu-is-opening menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ request()->is(['satuan*', 'jenis-barang']) ? 'active' : '' }}">
+                        <a href="#"
+                            class="nav-link {{ request()->is(['satuan*', 'jenis-barang']) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cube"></i>
                             <p>
                                 Barang

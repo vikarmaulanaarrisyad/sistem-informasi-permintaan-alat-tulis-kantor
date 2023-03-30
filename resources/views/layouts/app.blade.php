@@ -46,12 +46,107 @@
             font-weight: bold;
             color: #888;
         }
+
+        .help-block {
+            display: block;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: red;
+        }
+
+        .form-control.has-error {
+            border-radius: 0;
+            box-shadow: none;
+            border-color: #fb0000;
+        }
+
+        #background-loading {
+            background: #07131e;
+            z-index: 99999;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+        }
+
+        .loading-text {
+            position: absolute;
+            color: #fff;
+            top: 50%;
+            left: 50%;
+            margin: -5px 0 0 -32px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 700;
+        }
+
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            margin: -60px 0 0 -60px;
+            border: 4px solid transparent;
+            border-top-color: #ffa500;
+            border-bottom-color: #ffa500;
+            border-radius: 50%;
+            animation: loading 2s linear;
+            animation-iteration-count: infinite;
+        }
+
+        .loader::after,
+        .loader::before {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .loader::after {
+            left: 15px;
+            top: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 3px solid transparent;
+            border-top-color: #32cd32;
+            border-bottom-color: #32cd32;
+            animation: loading 1.5s linear;
+            animation-iteration-count: infinite;
+        }
+
+        .loader::before {
+            left: 6px;
+            top: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 3px solid transparent;
+            border-top-color: #03afdb;
+            border-bottom-color: #03afdb;
+            animation: loading 3s linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes loading {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 
     @stack('css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
+    <div id="background-loading">
+        <span class="loading-text">LOADING</span>
+        <div class="loader"></div>
+    </div>
+
     <div class="wrapper">
 
         <!-- Preloader -->
@@ -143,6 +238,12 @@
     <script src="{{ asset('/js/custom.js') }}"></script>
 
     @stack('scripts')
+
+    <script>
+        $(document).ready(function() {
+            $('#background-loading').fadeOut("slow");
+        });
+    </script>
 </body>
 
 </html>

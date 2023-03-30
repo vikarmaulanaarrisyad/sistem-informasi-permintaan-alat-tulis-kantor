@@ -23,7 +23,7 @@
 
 ## SEDANG DI KERJAKAN
 
-    - Modul Jenis Barang
+    - Modul Supplier
 
 ## BUG APLIKASI
 
@@ -33,3 +33,5 @@
     - Authentication, Otorisasi, Templating Engine
     - Modul Semesters
     - Modul Units
+    - Modul Jenis Barang
+
