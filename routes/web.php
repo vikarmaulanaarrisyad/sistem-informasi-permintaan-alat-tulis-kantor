@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     CategoryController,
     DashboardController,
+    ProductController,
     SatuanController,
     SemesterController,
     SupplierController,
@@ -48,5 +49,10 @@ Route::group([
         // route kategori
         Route::get('/jenis-barang/data', [CategoryController::class, 'data'])->name('jenis-barang.data');
         Route::resource('/jenis-barang', CategoryController::class)->except('create', 'edit');
+
+        // route barang
+        Route::get('/barang/data', [ProductController::class, 'data'])->name('barang.data');
+        Route::resource('/barang', ProductController::class);
+        Route::get('/barang/{id}/detail', [ProductController::class, 'detail'])->name('barang.detail');
     });
 });

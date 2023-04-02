@@ -58,9 +58,9 @@
                         </a>
                     </li>
                     <li
-                        class="nav-item {{ request()->is(['satuan', 'jenis-barang']) ? 'menu-is-opening menu-open' : '' }}">
+                        class="nav-item {{ request()->is(['satuan', 'jenis-barang', 'barang']) ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link {{ request()->is(['satuan*', 'jenis-barang']) ? 'active' : '' }}">
+                            class="nav-link {{ request()->is(['satuan*', 'jenis-barang', 'barang']) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cube"></i>
                             <p>
                                 Barang
@@ -68,7 +68,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview"
-                            style="{{ request()->is(['satuan*', 'jenis-barang*']) ? 'display: block;' : 'display: none;' }}">
+                            style="{{ request()->is(['satuan*', 'jenis-barang*', 'barang*']) ? 'display: block;' : 'display: none;' }}">
                             <li class="nav-item">
                                 <a href="{{ route('satuan.index') }}"
                                     class="nav-link {{ request()->is('satuan*') ? 'active' : '' }}">
@@ -84,7 +84,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/charts/inline.html" class="nav-link">
+                                <a href="{{ route('barang.index') }}"
+                                    class="nav-link {{ request()->is('barang*') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Data Barang</p>
                                 </a>

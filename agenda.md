@@ -16,14 +16,13 @@
 
 ## TODO LIST
 
-    - Modul Product
     - Modul Submissions
     - Modul Product Out
     - Modul Settings
 
 ## SEDANG DI KERJAKAN
 
-    - Modul Supplier
+    - Modul Product
 
 ## BUG APLIKASI
 
@@ -34,4 +33,4 @@
     - Modul Semesters
     - Modul Units
     - Modul Jenis Barang
-
+    - Modul Supplier
