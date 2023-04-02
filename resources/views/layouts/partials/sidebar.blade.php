@@ -94,7 +94,15 @@
                         </ul>
                     </li>
                 @else
-                    <li class="nav-header">MASTER</li>
+                    <li class="nav-item">
+                        <a href="{{ route('permintaan-barang.index') }}"
+                            class="nav-link {{ request()->is('permintaan-barang') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-folder-open"></i>
+                            <p>
+                                Data Permintaan Barang
+                            </p>
+                        </a>
+                    </li>
                 @endif
                 @if (auth()->user()->hasRole('admin'))
                     <li class="nav-header">PERMINTAAN</li>

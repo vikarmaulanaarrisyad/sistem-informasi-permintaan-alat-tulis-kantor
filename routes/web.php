@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     CategoryController,
     DashboardController,
+    PermintaanBarang,
     ProductController,
     SatuanController,
     SemesterController,
@@ -29,6 +30,16 @@ Route::group([
     'middleware' => ['auth', 'role:admin,user']
 ], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+    Route::group([
+        'middleware' => 'role:user'
+    ], function () {
+        // route permintaan barang
+        Route::get('/permintaan-barang/data', [PermintaanBarang::class, 'data'])->name('permintaan-barang.data');
+        Route::resource('permintaan-barang', PermintaanBarang::class);
+        Route::get('/permintaan-barang/product/{id}', [PermintaanBarang::class, 'getProduct'])->name('permintaan-barang.get_product');
+    });
 
     Route::group([
         'middleware' => 'role:admin'
