@@ -106,25 +106,24 @@
                 @endif
                 @if (auth()->user()->hasRole('admin'))
                     <li class="nav-header">PERMINTAAN</li>
-                    @if (auth()->user()->hasRole('admin'))
+                    {{-- @if (auth()->user()->hasRole('admin'))
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('permintaan-barang.index') }}" class="nav-link {{ request()->is('permintaan-barang') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-download"></i>
                                 <p>
                                     Permintaan Barang
                                 </p>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                     <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->is('orders*') ? 'active' : '' }}">
+                        <a href="{{ route('verifikasi-permintaan.index') }}" class="nav-link {{ request()->is('verifikasi-permintaan*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-check-circle"></i>
                             <p>
                                 Verifikasi Permintaan
                             </p>
                         </a>
                     </li>
-
                 @endif
 
                 @if (auth()->user()->hasRole('admin'))

@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     SatuanController,
     SemesterController,
     SupplierController,
+    VerifikasiPermintaanController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -32,14 +33,6 @@ Route::group([
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
-    Route::group([
-        'middleware' => 'role:user'
-    ], function () {
-        // route permintaan barang
-        Route::get('/permintaan-barang/data', [PermintaanBarang::class, 'data'])->name('permintaan-barang.data');
-        Route::resource('permintaan-barang', PermintaanBarang::class);
-        Route::get('/permintaan-barang/product/{id}', [PermintaanBarang::class, 'getProduct'])->name('permintaan-barang.get_product');
-    });
 
     Route::group([
         'middleware' => 'role:admin'
@@ -65,5 +58,20 @@ Route::group([
         Route::get('/barang/data', [ProductController::class, 'data'])->name('barang.data');
         Route::resource('/barang', ProductController::class);
         Route::get('/barang/{id}/detail', [ProductController::class, 'detail'])->name('barang.detail');
+
+        // route verifikasi permintaan
+        Route::get('/verifikasi-permintaan/data', [VerifikasiPermintaanController::class, 'data'])->name('verifikasi-permintaan.data');
+        Route::get('/verifikasi-permintaan', [VerifikasiPermintaanController::class, 'index'])->name('verifikasi-permintaan.index');
+        Route::get('/verifikasi-permintaan/approval', [VerifikasiPermintaanController::class, 'approval'])->name('verifikasi-permintaan.approval');
+    });
+
+
+    Route::group([
+        'middleware' => 'role:user'
+    ], function () {
+        // route permintaan barang
+        Route::get('/permintaan-barang/data', [PermintaanBarang::class, 'data'])->name('permintaan-barang.data');
+        Route::resource('permintaan-barang', PermintaanBarang::class);
+        Route::get('/permintaan-barang/product/{id}', [PermintaanBarang::class, 'getProduct'])->name('permintaan-barang.get_product');
     });
 });

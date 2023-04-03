@@ -17,4 +17,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, 'category_product',  'product_id')->withTimestamps();
     }
+
+    public function permintaan_barang()
+    {
+        return $this->belongsTo(Submission::class, 'id','product_id');
+    }
 }

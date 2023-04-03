@@ -15,9 +15,8 @@ class PermintaanBarang extends Controller
      */
     public function index()
     {
-        $products = Product::with('satuan', 'category_product')->get();
         $semesterAktif = Semester::active()->first();
-
+        $products = Product::with('satuan', 'category_product')->get();
 
         return view('permintaan.index', compact(['products', 'semesterAktif']));
     }
@@ -28,6 +27,7 @@ class PermintaanBarang extends Controller
     public function data()
     {
         $userId = auth()->user()->id;
+
         $permintaan = Submission::whereRelation('user', 'user_id', $userId)->orderBy('created_at', 'DESC');
 
         return datatables($permintaan)
@@ -42,6 +42,7 @@ class PermintaanBarang extends Controller
                 return $permintaan->product->satuan->name;
             })
             ->addColumn('aksi', function ($permintaan) {
+
                 if ($permintaan->status != 'finish') {
                     return '
                         <div class="btn-group">
