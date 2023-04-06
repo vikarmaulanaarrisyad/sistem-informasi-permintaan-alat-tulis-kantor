@@ -17,7 +17,7 @@
                         class="btn btn-primary btn-sm"><i class="fas fa-check-circle"></i> Verifikasi Permintaan</button>
                 </x-slot>
 
-                <x-table>
+                <x-table class="table-verifikasi-permintaan">
                     <x-slot name="thead">
                         <th>
                             <input type="checkbox" name="select_all" id="select_all" class="select_all">
@@ -36,7 +36,6 @@
             </x-card>
         </div>
     </div>
-    {{-- @include('permintaan.form') --}}
 @endsection
 
 @includeIf('include.datatables')
@@ -53,7 +52,7 @@
             $('#spinner-border').hide();
         });
 
-        table = $('.table').DataTable({
+        table1 = $('.table-verifikasi-permintaan').DataTable({
             processing: true,
             serverside: true,
             autoWidth: false,
@@ -107,52 +106,71 @@
             let semua_checkbox = $("#table tbody .submission_id:checked")
             let button_verifikasi_permintaan = (semua_checkbox.length > 0)
             $("#button-verifikasi-all").prop('disabled', !button_verifikasi_permintaan)
-
         })
 
         function verifikasiPermintaanTerpilih(url) {
-            let checkbox_terpilih = $("#table tbody .submission_id:checked")
-            let semua_id = []
-
-            $.each(checkbox_terpilih, function(index, elm) {
-                semua_id.push(elm.value)
-            });
-
-            $.ajax({
-                type: "post",
-                url: url,
-                data: {
-                    ids: semua_id
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
                 },
-                dataType: "json",
-                success: function(response) {
-                    if (response.status = 200) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: response.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-                    table.ajax.reload();
-                },
-                errors: function(errors) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Opps! Gagal',
-                        text: errors.responseJSON.message,
-                        showConfirmButton: true,
+                buttonsStyling: true,
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Apakah anda yakin?',
+                text: 'Anda akan menyetujui permintaan barang.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Iya, Setuju!',
+                cancelButtonText: 'Batalkan',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let checkbox_terpilih = $("#table tbody .submission_id:checked")
+                    let semua_id = []
+
+                    $.each(checkbox_terpilih, function(index, elm) {
+                        semua_id.push(elm.value)
                     });
-                    if (errors.status == 422) {
-                        $('#spinner-border').hide()
-                        $(button).prop('disabled', false);
-                        loopErrors(errors.responseJSON.errors);
-                        return;
-                    }
+
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: {
+                            ids: semua_id
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status = 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            }
+                            table1.ajax.reload();
+                        },
+                        errors: function(errors) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Opps! Gagal',
+                                text: errors.responseJSON.message,
+                                showConfirmButton: true,
+                            });
+                            if (errors.status == 422) {
+                                $('#spinner-border').hide()
+                                $(button).prop('disabled', false);
+                                loopErrors(errors.responseJSON.errors);
+                                return;
+                            }
+                        }
+                    });
                 }
             });
-
         }
     </script>
 @endpush

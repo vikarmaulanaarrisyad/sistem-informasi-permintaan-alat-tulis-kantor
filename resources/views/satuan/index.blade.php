@@ -155,10 +155,10 @@
                     ' !',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: 'rgb(255,0,0)',
+                confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#aaa',
-                confirmButtonText: 'Iya, hapus!',
-                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Iya, Hapus!',
+                cancelButtonText: 'Batalkan',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
