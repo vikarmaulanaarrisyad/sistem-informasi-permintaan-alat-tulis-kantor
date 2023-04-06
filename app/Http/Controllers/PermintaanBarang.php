@@ -43,7 +43,7 @@ class PermintaanBarang extends Controller
             })
             ->addColumn('aksi', function ($permintaan) {
 
-                if ($permintaan->status != 'finish') {
+                if ($permintaan->status == 'submit') {
                     return '
                         <div class="btn-group">
                             <button onclick="editForm(`' . route('permintaan-barang.show', $permintaan->id) . '`)" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i> Edit</button>
@@ -84,6 +84,15 @@ class PermintaanBarang extends Controller
             return response()->json(['errors' => $validator->errors(), 'message' => 'Data gagal disimpan.'], 422);
         }
 
+        // Cek apakah ada permintaan barang yang belum diproses untuk produk yang sama
+        $existingSubmission = Submission::where('product_id', $request->name)
+            ->where('status', 'submit')
+            ->first();
+
+        if ($existingSubmission) {
+            return response()->json(['message' => 'Maaf Anda sudah memiliki permintaan barang yang belum diverifikasi bagian logistik. Tidak dapat melakukan permintaan data baru'], 422);
+        }
+
         $permintaan = new Submission();
         $permintaan->code = 'P-' . rand(99999999, 10000000);
         $permintaan->semester_id = $request->semester;
@@ -94,6 +103,8 @@ class PermintaanBarang extends Controller
         $permintaan->total_price = $permintaan->product->price * $request->quantity;
         $permintaan->status = 'submit';
         $permintaan->save();
+
+
 
         return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
     }
