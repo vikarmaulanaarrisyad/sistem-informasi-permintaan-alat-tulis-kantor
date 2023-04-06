@@ -53,7 +53,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="stock">Persediaan Barang</label>
+                <label for="stock">Stok Barang</label>
                 <select name="stock" id="stock" class="custom-select" disabled readonly>
                     {{-- <option disabled selected>-</option> --}}
                 </select>

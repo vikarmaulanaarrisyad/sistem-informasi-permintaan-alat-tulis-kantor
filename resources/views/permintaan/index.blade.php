@@ -93,10 +93,10 @@
 
             $('#code').prop('disabled', true).hide();
             $('#name').prop('disabled', false);
-            $('#unit').prop('disabled', false);
+            $('#unit').prop('disabled', true).trigger('change').val("-");
             $('#categories').prop('disabled', false);
             $('#price').prop('disabled', false);
-            $('#stock').prop('disabled', true);
+            $('#stock').prop('disabled', true).trigger('change').val('-');
 
             getDataPermintaan();
 

@@ -62,7 +62,7 @@ Route::group([
         // route verifikasi permintaan
         Route::get('/verifikasi-permintaan/data', [VerifikasiPermintaanController::class, 'data'])->name('verifikasi-permintaan.data');
         Route::get('/verifikasi-permintaan', [VerifikasiPermintaanController::class, 'index'])->name('verifikasi-permintaan.index');
-        Route::get('/verifikasi-permintaan/approval', [VerifikasiPermintaanController::class, 'approval'])->name('verifikasi-permintaan.approval');
+        Route::post('/verifikasi-permintaan/approval', [VerifikasiPermintaanController::class, 'approval'])->name('verifikasi-permintaan.approval');
     });
 
 

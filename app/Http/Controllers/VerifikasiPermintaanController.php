@@ -13,6 +13,11 @@ class VerifikasiPermintaanController extends Controller
 
         return datatables($permintaan)
             ->addIndexColumn()
+            ->addColumn('select_all', function ($permintaan) {
+                return '
+                    <input type="checkbox" name="product_id[]" id="product_id" value="' . $permintaan->id . '">
+                ';
+            })
             ->addColumn('prodi', function ($permintaan) {
                 return $permintaan->user->name;
             })
@@ -38,5 +43,10 @@ class VerifikasiPermintaanController extends Controller
     public function index()
     {
         return view('verifikasi.index');
+    }
+
+    public function approval(Request $request)
+    {
+        dd($request->select_all);
     }
 }
