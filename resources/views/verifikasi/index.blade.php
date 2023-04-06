@@ -12,14 +12,15 @@
         <div class="col-md-12">
             <x-card>
                 <x-slot name="header">
-                    <button onclick="verifikasiData(`{{ route('verifikasi-permintaan.approval') }}`)"
+                    <button disabled id="button-verifikasi-all"
+                        onclick="verifikasiPermintaanTerpilih(`{{ route('verifikasi-permintaan.approval') }}`)"
                         class="btn btn-primary btn-sm"><i class="fas fa-check-circle"></i> Verifikasi Permintaan</button>
                 </x-slot>
 
                 <x-table>
                     <x-slot name="thead">
                         <th>
-                            <input type="checkbox" name="select_all" id="select_all">
+                            <input type="checkbox" name="select_all" id="select_all" class="select_all">
                         </th>
                         <th>No</th>
                         <th>Prodi</th>
@@ -45,6 +46,7 @@
     <script>
         let modal = '#modal-form';
         let button = '#submitBtn';
+        let isChek = 0;
         let table;
 
         $(function() {
@@ -53,6 +55,7 @@
 
         table = $('.table').DataTable({
             processing: true,
+            serverside: true,
             autoWidth: false,
             ajax: {
                 url: '{{ route('verifikasi-permintaan.data') }}',
@@ -90,10 +93,66 @@
             ]
         });
 
+        $("#select_all").on('click', function() {
+            var isChecked = $("#select_all").prop('checked');
+            $(".submission_id").prop('checked', isChecked);
+            $("#button-verifikasi-all").prop('disabled', !isChecked);
+        })
 
+        $("#table tbody").on('click', '.submission_id', function() {
+            if ($(this).prop('checked') != true) {
+                $("#select_all").prop('checked', false);
+            }
 
-        $('[name=select_all]').on('click', function() {
-            $(':checkbox').prop('checked', this.checked);
-        });
+            let semua_checkbox = $("#table tbody .submission_id:checked")
+            let button_verifikasi_permintaan = (semua_checkbox.length > 0)
+            $("#button-verifikasi-all").prop('disabled', !button_verifikasi_permintaan)
+
+        })
+
+        function verifikasiPermintaanTerpilih(url) {
+            let checkbox_terpilih = $("#table tbody .submission_id:checked")
+            let semua_id = []
+
+            $.each(checkbox_terpilih, function(index, elm) {
+                semua_id.push(elm.value)
+            });
+
+            $.ajax({
+                type: "post",
+                url: url,
+                data: {
+                    ids: semua_id
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.status = 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    table.ajax.reload();
+                },
+                errors: function(errors) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Opps! Gagal',
+                        text: errors.responseJSON.message,
+                        showConfirmButton: true,
+                    });
+                    if (errors.status == 422) {
+                        $('#spinner-border').hide()
+                        $(button).prop('disabled', false);
+                        loopErrors(errors.responseJSON.errors);
+                        return;
+                    }
+                }
+            });
+
+        }
     </script>
 @endpush

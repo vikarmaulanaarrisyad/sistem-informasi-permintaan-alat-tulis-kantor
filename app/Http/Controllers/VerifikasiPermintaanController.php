@@ -9,13 +9,14 @@ class VerifikasiPermintaanController extends Controller
 {
     public function data(Request $request)
     {
-        $permintaan = Submission::orderBy('created_at', 'DESC')->where('status', '!=', 'finish');
+        $permintaan = Submission::orderBy('created_at', 'DESC')->where('status', '!=', 'finish')->where('status', '!=', 'process');
+
 
         return datatables($permintaan)
             ->addIndexColumn()
             ->addColumn('select_all', function ($permintaan) {
                 return '
-                    <input type="checkbox" name="product_id[]" id="product_id" value="' . $permintaan->id . '">
+                    <input type="checkbox" class="submission_id" name="submission_id[]" id="submission_id" value="' . $permintaan->id . '">
                 ';
             })
             ->addColumn('prodi', function ($permintaan) {
@@ -47,6 +48,8 @@ class VerifikasiPermintaanController extends Controller
 
     public function approval(Request $request)
     {
-        dd($request->select_all);
+        Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
+
+        return response()->json(['message' => 'Permintaan berhasil diverifikasi.']);
     }
 }
