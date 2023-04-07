@@ -31,7 +31,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="name">Nama Barang</label>
-                <select id="name" class="custom-select" name="name" autocomplete="off">
+                <select id="name" class="select2" name="name" autocomplete="off">
                     <option disabled selected>Pilih salah satu</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->id }}">{{ $product->name }}</option>

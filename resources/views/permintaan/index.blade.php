@@ -23,6 +23,7 @@
                         <th>Nama Barang</th>
                         <th>Jumlah</th>
                         <th>Satuan</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </x-slot>
                 </x-table>
@@ -32,6 +33,7 @@
     @include('permintaan.form')
 @endsection
 
+@include('include.select2')
 @includeIf('include.datatables')
 @include('include.datepicker')
 
@@ -69,6 +71,9 @@
                 },
                 {
                     data: 'unit',
+                },
+                {
+                    data: 'status',
                 },
                 {
                     data: 'aksi',

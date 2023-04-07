@@ -51,9 +51,7 @@ class PermintaanBarang extends Controller
                         </div>
                     ';
                 } else {
-                    return '
-                        <a href="" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i> Detail</a>
-                    ';
+                    return '';
                 }
             })
             ->escapeColumns([])
@@ -93,8 +91,11 @@ class PermintaanBarang extends Controller
             return response()->json(['message' => 'Maaf Anda sudah memiliki permintaan barang yang belum diverifikasi bagian logistik. Tidak dapat melakukan permintaan data baru'], 422);
         }
 
+        $date = $request->date;
+        $year = substr($date, 2, 2);
+
         $permintaan = new Submission();
-        $permintaan->code = 'P-' . rand(99999999, 10000000);
+        $permintaan->code = 'P-' . $year . '-'  . rand(999999, 100000);
         $permintaan->semester_id = $request->semester;
         $permintaan->user_id = Auth()->user()->id;
         $permintaan->date = $request->date;
@@ -103,8 +104,6 @@ class PermintaanBarang extends Controller
         $permintaan->total_price = $permintaan->product->price * $request->quantity;
         $permintaan->status = 'submit';
         $permintaan->save();
-
-
 
         return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
     }
