@@ -15,6 +15,25 @@
                     <button onclick="addForm(`{{ route('permintaan-barang.store') }}`)" class="btn btn-primary btn-sm"><i
                             class="fas fa-plus-circle"></i> Tambah Data</button>
                 </x-slot>
+                <div class="d-flex">
+                    <div class="form-group mr-4">
+                        <label for="status2">Status</label>
+                        <select name="status2" id="status2" class="custom-select">
+                            <option value="" selected>Semua</option>
+                            <option value="process" {{ request('status') == 'process' ? 'selected' : '' }}>Proses</option>
+                            <option value="submit" {{ request('status') == 'submit' ? 'selected' : '' }}>Pending</option>
+                            <option value="finish" {{ request('status') == 'finish' ? 'selected' : '' }}>Selesai
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="form-group">
+                            <label for="my-input">Filter tanggal</label>
+                            <input type="text" class="form-control float-right" name="datefilter">
+                        </div>
+                    </div>
+                </div>
 
                 <x-table>
                     <x-slot name="thead">
@@ -36,6 +55,7 @@
 @include('include.select2')
 @includeIf('include.datatables')
 @include('include.datepicker')
+@includeIf('include.daterangepicker')
 
 @push('scripts')
     <script>
@@ -45,7 +65,8 @@
 
         $(function() {
             $('#spinner-border').hide();
-
+            $('[name=start_date2]').val("")
+            $('[name=end_date2]').val("")
 
         });
 
@@ -54,6 +75,10 @@
             autoWidth: false,
             ajax: {
                 url: '{{ route('permintaan-barang.data') }}',
+                data: function(d) {
+                    d.datefilter = $('input[name="datefilter"]').val(),
+                        d.status = $('[name=status2]').val();
+                }
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -82,6 +107,26 @@
                 },
             ]
         });
+
+        $('.datepicker').on('change.datetimepicker', function() {
+            table.ajax.reload();
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            table.ajax.reload();
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+            table.ajax.reload();
+
+        });
+
+        $('[name=status2]').on('change', function() {
+            table.ajax.reload();
+        });
+
 
         function addForm(url, title = 'Tambah Daftar Barang') {
             $(modal).modal('show');

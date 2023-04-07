@@ -24,11 +24,36 @@ class PermintaanBarang extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function data()
+    public function data(Request $request)
     {
+
+        $date_range = $request->input('datefilter');
         $userId = auth()->user()->id;
 
-        $permintaan = Submission::whereRelation('user', 'user_id', $userId)->orderBy('created_at', 'DESC');
+        if (strpos($date_range, ' - ') !== false) {
+            $date_parts = explode(' - ', $date_range);
+
+            $start_date = $date_parts[0];
+            $end_date = $date_parts[1];
+
+            $permintaan = Submission::whereRelation('user', 'user_id', $userId)
+                ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                })
+                ->when(
+                    $request->datefilter != "",
+                    function ($query) use ($start_date, $end_date) {
+                        $query->whereBetween('date', [$start_date, $end_date]);
+                    }
+                )
+                ->orderBy('created_at', 'DESC');
+        } else {
+            $permintaan = Submission::whereRelation('user', 'user_id', $userId)
+                ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                })
+                ->orderBy('created_at', 'DESC'); // query kosong
+        }
 
         return datatables($permintaan)
             ->addIndexColumn()
