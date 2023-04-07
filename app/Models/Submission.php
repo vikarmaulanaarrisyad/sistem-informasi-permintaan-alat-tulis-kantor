@@ -18,4 +18,28 @@ class Submission extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function textColor()
+    {
+        $color = "";
+
+        switch ($this->status) {
+            case 'submit':
+                $color = 'warning';
+                break;
+
+            case 'process':
+                $color = 'info';
+                break;
+
+            case 'finish':
+                $color = 'success';
+                break;
+
+            default:
+                break;
+        }
+
+        return $color;
+    }
 }

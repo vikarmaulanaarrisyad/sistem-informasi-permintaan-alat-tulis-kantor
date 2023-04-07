@@ -18,7 +18,7 @@ class PermintaanBarang extends Controller
         $semesterAktif = Semester::active()->first();
         $products = Product::with('satuan', 'category_product')->get();
 
-        return view('permintaan.index', compact(['products', 'semesterAktif']));
+        return view('permintaan.index', compact('products', 'semesterAktif'));
     }
 
     /**
@@ -57,6 +57,9 @@ class PermintaanBarang extends Controller
 
         return datatables($permintaan)
             ->addIndexColumn()
+            ->addColumn('code', function ($permintaan) {
+                return '<span class="badge badge-success">' . $permintaan->code . '</span>';
+            })
             ->addColumn('product', function ($permintaan) {
                 return $permintaan->product->name;
             })
@@ -65,6 +68,9 @@ class PermintaanBarang extends Controller
             })
             ->addColumn('unit', function ($permintaan) {
                 return $permintaan->product->satuan->name;
+            })
+            ->addColumn('status', function ($permintaan) {
+                return '<span class="badge badge-' . $permintaan->textColor() . '">' . $permintaan->status . '</span>';
             })
             ->addColumn('aksi', function ($permintaan) {
 

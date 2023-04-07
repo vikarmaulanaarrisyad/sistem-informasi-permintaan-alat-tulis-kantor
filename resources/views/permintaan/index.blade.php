@@ -27,6 +27,17 @@
                         </select>
                     </div>
 
+                    <div class="form-group mr-4">
+                        <label for="semester">Semester</label>
+                        <select name="semester" id="semester" class="custom-select">
+                            <option value="" selected>Semua</option>
+                            <option value="process" {{ request('status') == 'process' ? 'selected' : '' }}>Proses</option>
+                            <option value="submit" {{ request('status') == 'submit' ? 'selected' : '' }}>Pending</option>
+                            <option value="finish" {{ request('status') == 'finish' ? 'selected' : '' }}>Selesai
+                            </option>
+                        </select>
+                    </div>
+
                     <div class="d-flex">
                         <div class="form-group">
                             <label for="my-input">Filter tanggal</label>
