@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductOut;
 use App\Models\Submission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VerifikasiPermintaanController extends Controller
 {
@@ -48,7 +50,7 @@ class VerifikasiPermintaanController extends Controller
 
     public function approval(Request $request)
     {
-        Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
+       Submission::whereIn('id', $request->ids)->update(['status' => 'finish']);
 
         return response()->json(['message' => 'Permintaan berhasil diverifikasi.']);
     }

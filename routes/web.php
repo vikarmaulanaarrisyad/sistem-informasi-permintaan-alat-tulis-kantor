@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     CategoryController,
     DashboardController,
+    PengeluaranBarang,
     PermintaanBarang,
     ProductController,
     SatuanController,
@@ -63,6 +64,10 @@ Route::group([
         Route::get('/verifikasi-permintaan/data', [VerifikasiPermintaanController::class, 'data'])->name('verifikasi-permintaan.data');
         Route::get('/verifikasi-permintaan', [VerifikasiPermintaanController::class, 'index'])->name('verifikasi-permintaan.index');
         Route::post('/verifikasi-permintaan/approval', [VerifikasiPermintaanController::class, 'approval'])->name('verifikasi-permintaan.approval');
+
+        // route pengeluaran barang
+        Route::get('/pengeluaran-barang/data', [PengeluaranBarang::class, 'data'])->name('pengeluaran-barang.data');
+        Route::get('/pengeluaran-barang', [PengeluaranBarang::class, 'index'])->name('pengeluaran-barang.index');
     });
 
 

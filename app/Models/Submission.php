@@ -14,6 +14,11 @@ class Submission extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);

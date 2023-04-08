@@ -106,18 +106,9 @@
                 @endif
                 @if (auth()->user()->hasRole('admin'))
                     <li class="nav-header">PERMINTAAN</li>
-                    {{-- @if (auth()->user()->hasRole('admin'))
-                        <li class="nav-item">
-                            <a href="{{ route('permintaan-barang.index') }}" class="nav-link {{ request()->is('permintaan-barang') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-download"></i>
-                                <p>
-                                    Permintaan Barang
-                                </p>
-                            </a>
-                        </li>
-                    @endif --}}
                     <li class="nav-item">
-                        <a href="{{ route('verifikasi-permintaan.index') }}" class="nav-link {{ request()->is('verifikasi-permintaan*') ? 'active' : '' }}">
+                        <a href="{{ route('verifikasi-permintaan.index') }}"
+                            class="nav-link {{ request()->is('verifikasi-permintaan*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-check-circle"></i>
                             <p>
                                 Verifikasi Permintaan
@@ -127,30 +118,31 @@
                 @endif
 
                 @if (auth()->user()->hasRole('admin'))
-                    <li class="nav-header">REPORT</li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->is('orders*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-pdf"></i>
-                            <p>
-                                Rekap Permintaan
-                            </p>
-                        </a>
-                    </li>
-
                     <li class="nav-header">TRANSAKSI</li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="#" class="nav-link {{ request()->is('orders*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>
                                 Pembelian Barang
                             </p>
                         </a>
+                    </li> --}}
+                    <li class="nav-item">
+                        <a href="{{ route('pengeluaran-barang.index') }}"
+                            class="nav-link {{ request()->is('pengeluaran-barang*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>
+                                Pengeluaran Barang
+                            </p>
+                        </a>
                     </li>
+
+                    <li class="nav-header">REPORT</li>
                     <li class="nav-item">
                         <a href="#" class="nav-link {{ request()->is('orders*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-truck"></i>
+                            <i class="nav-icon fas fa-file-pdf"></i>
                             <p>
-                                Pendistribusian
+                                Rekap Permintaan
                             </p>
                         </a>
                     </li>

@@ -7,4 +7,5 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProductOut extends Model
 {
     use HasFactory;
+    protected $table = 'product_outs';
 }
