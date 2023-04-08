@@ -7,7 +7,7 @@ use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class PengeluaranBarang extends Controller
+class PengeluaranBarangController extends Controller
 {
     public function data(Request $request)
     {

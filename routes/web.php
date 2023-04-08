@@ -3,7 +3,7 @@
 use App\Http\Controllers\{
     CategoryController,
     DashboardController,
-    PengeluaranBarang,
+    PengeluaranBarangController,
     PermintaanBarang,
     ProductController,
     SatuanController,
@@ -66,8 +66,8 @@ Route::group([
         Route::post('/verifikasi-permintaan/approval', [VerifikasiPermintaanController::class, 'approval'])->name('verifikasi-permintaan.approval');
 
         // route pengeluaran barang
-        Route::get('/pengeluaran-barang/data', [PengeluaranBarang::class, 'data'])->name('pengeluaran-barang.data');
-        Route::get('/pengeluaran-barang', [PengeluaranBarang::class, 'index'])->name('pengeluaran-barang.index');
+        Route::get('/pengeluaran-barang/data', [PengeluaranBarangController::class, 'data'])->name('pengeluaran-barang.data');
+        Route::get('/pengeluaran-barang', [PengeluaranBarangController::class, 'index'])->name('pengeluaran-barang.index');
     });
 
 
