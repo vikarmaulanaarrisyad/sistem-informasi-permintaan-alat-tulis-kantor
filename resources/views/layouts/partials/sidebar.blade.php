@@ -119,14 +119,14 @@
 
                 @if (auth()->user()->hasRole('admin'))
                     <li class="nav-header">TRANSAKSI</li>
-                    {{-- <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->is('orders*') ? 'active' : '' }}">
+                    <li class="nav-item">
+                        <a href="{{ route('pembelian-barang.index') }}" class="nav-link {{ request()->is('pembelian-barang*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>
                                 Pembelian Barang
                             </p>
                         </a>
-                    </li> --}}
+                    </li>
                     <li class="nav-item">
                         <a href="{{ route('pengeluaran-barang.index') }}"
                             class="nav-link {{ request()->is('pengeluaran-barang*') ? 'active' : '' }}">

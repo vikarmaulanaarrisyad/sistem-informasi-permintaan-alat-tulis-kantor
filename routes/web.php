@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     CategoryController,
     DashboardController,
+    PembelianBarangController,
     PengeluaranBarangController,
     PermintaanBarang,
     ProductController,
@@ -32,6 +33,7 @@ Route::group([
     'middleware' => ['auth', 'role:admin,user']
 ], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/permintaan-barang/product/{id}', [PermintaanBarang::class, 'getProduct'])->name('permintaan-barang.get_product');
 
 
 
@@ -68,6 +70,10 @@ Route::group([
         // route pengeluaran barang
         Route::get('/pengeluaran-barang/data', [PengeluaranBarangController::class, 'data'])->name('pengeluaran-barang.data');
         Route::get('/pengeluaran-barang', [PengeluaranBarangController::class, 'index'])->name('pengeluaran-barang.index');
+
+        // route pembelian barang
+        Route::get('/pembelian-barang/data', [PembelianBarangController::class, 'data'])->name('pembelian-barang.data');
+        Route::resource('/pembelian-barang', PembelianBarangController::class);
     });
 
 
@@ -77,6 +83,5 @@ Route::group([
         // route permintaan barang
         Route::get('/permintaan-barang/data', [PermintaanBarang::class, 'data'])->name('permintaan-barang.data');
         Route::resource('permintaan-barang', PermintaanBarang::class);
-        Route::get('/permintaan-barang/product/{id}', [PermintaanBarang::class, 'getProduct'])->name('permintaan-barang.get_product');
     });
 });
