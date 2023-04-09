@@ -106,7 +106,7 @@ class PermintaanBarang extends Controller
     {
         $validator = Validator::make($request->all(), [
             'semester' => 'required',
-            'name' => 'required',
+            'product_id' => 'required',
             'date' => 'required',
             'quantity' => 'required',
         ]);
@@ -124,21 +124,27 @@ class PermintaanBarang extends Controller
             return response()->json(['message' => 'Maaf Anda sudah memiliki permintaan barang yang belum diverifikasi bagian logistik. Tidak dapat melakukan permintaan data baru'], 422);
         }
 
-        $date = $request->date;
-        $year = substr($date, 2, 2);
+        $product = Product::where('id', $request->product_id)->first();
 
-        $permintaan = new Submission();
-        $permintaan->code = 'P-' . $year . '-'  . rand(999999, 100000);
-        $permintaan->semester_id = $request->semester;
-        $permintaan->user_id = Auth()->user()->id;
-        $permintaan->date = $request->date;
-        $permintaan->product_id = $request->name;
-        $permintaan->quantity = $request->quantity;
-        $permintaan->total_price = $permintaan->product->price * $request->quantity;
-        $permintaan->status = 'submit';
-        $permintaan->save();
+        if ($product->stock < $request->quantity) {
+            return response()->json(['message' => 'Jumlah permintaan melebihi stok tersedia ' . $product->stock], 302);
+        } else {
+            $date = $request->date;
+            $year = substr($date, 2, 2);
 
-        return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
+            $permintaan = new Submission();
+            $permintaan->code = 'P-' . $year . '-'  . rand(999999, 100000);
+            $permintaan->semester_id = $request->semester;
+            $permintaan->user_id = Auth()->user()->id;
+            $permintaan->date = $request->date;
+            $permintaan->product_id = $request->product_id;
+            $permintaan->quantity = $request->quantity;
+            $permintaan->total_price = $permintaan->product->price * $request->quantity;
+            $permintaan->status = 'submit';
+            $permintaan->save();
+
+            return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
+        }
     }
 
     /**

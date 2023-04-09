@@ -142,7 +142,7 @@
             $(`${modal} #stock`).prop('disabled', true);
 
             $('#code').prop('disabled', true).hide();
-            $('#name').prop('disabled', false);
+            $('#product_id').prop('disabled', false);
             $('#unit').prop('disabled', true).trigger('change').val("-");
             $('#categories').prop('disabled', false);
             $('#price').prop('disabled', false);
@@ -171,11 +171,11 @@
 
                     $('#code').prop('disabled', true).show();
                     $('#input-code').prop('disabled', true).val(response.data.code);
-                    $('#name').prop('disabled', true);
+                    $('#product_id').prop('disabled', true);
                     $('#unit').prop('disabled', true);
                     $('#stock').prop('disabled', true);
 
-                    $('#name')
+                    $('#product_id')
                         .val(response.data.product_id)
                         .trigger('change')
                         .prop('disabled', true);
@@ -319,8 +319,8 @@
         }
 
         function getDataPermintaan() {
-            $('#name').on('change', function() {
-                let productId = $('[name=name]').val();
+            $('#product_id').on('change', function() {
+                let productId = $('[name=product_id]').val();
                 if (productId) {
                     $.ajax({
                         type: "GET",
