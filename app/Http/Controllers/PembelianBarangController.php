@@ -80,16 +80,20 @@ class PembelianBarangController extends Controller
             return response()->json(['errors' => $validator->errors(), 'message' => 'Data gagal disimpan.'], 422);
         }
 
-        $permintaan = new ProductIn();
-        $permintaan->semester_id = $request->semester;
-        $permintaan->supplier_id = $request->supplier_id;
-        $permintaan->date = $request->date;
-        $permintaan->product_id = $request->name;
-        $permintaan->quantity = $request->quantity;
-        $permintaan->total_price = $permintaan->product->price * $request->quantity;
-        $permintaan->save();
+        $pembelian = new ProductIn();
+        $pembelian->semester_id = $request->semester;
+        $pembelian->supplier_id = $request->supplier_id;
+        $pembelian->date = $request->date;
+        $pembelian->product_id = $request->name;
+        $pembelian->quantity = $request->quantity;
+        $pembelian->total_price = $pembelian->product->price * $request->quantity;
+        $pembelian->save();
 
-        return response()->json(['data' => $permintaan, 'message' => 'Pembelian barang berhasil disimpan.']);
+        $product = Product::where('id', $pembelian->product_id)->first();
+        $product->stock += $pembelian->quantity;
+        $product->save();
+        
+        return response()->json(['data' => $pembelian, 'message' => 'Pembelian barang berhasil disimpan.']);
     }
 
     /**
