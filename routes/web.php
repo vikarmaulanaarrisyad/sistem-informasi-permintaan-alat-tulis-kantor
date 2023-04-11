@@ -9,6 +9,8 @@ use App\Http\Controllers\{
     ProductController,
     SatuanController,
     SemesterController,
+    StokBarangMasukController,
+    StokController,
     SupplierController,
     VerifikasiPermintaanController,
 };
@@ -74,6 +76,7 @@ Route::group([
         // route pembelian barang
         Route::get('/pembelian-barang/data', [PembelianBarangController::class, 'data'])->name('pembelian-barang.data');
         Route::resource('/pembelian-barang', PembelianBarangController::class);
+
     });
 
 

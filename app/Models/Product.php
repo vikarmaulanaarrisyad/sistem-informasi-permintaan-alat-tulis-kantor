@@ -20,6 +20,11 @@ class Product extends Model
 
     public function permintaan_barang()
     {
-        return $this->belongsTo(Submission::class, 'id','product_id');
+        return $this->belongsTo(Submission::class, 'id', 'product_id');
+    }
+
+    public function pembelian_barang()
+    {
+        return $this->belongsTo(ProductIn::class, 'id', 'product_id');
     }
 }

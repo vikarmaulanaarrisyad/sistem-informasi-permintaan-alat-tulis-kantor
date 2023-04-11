@@ -153,6 +153,7 @@
                                 })
                             }
                             table1.ajax.reload();
+                            $("#button-verifikasi-all").prop('disabled', true)
                         },
                         errors: function(errors) {
                             Swal.fire({
@@ -164,6 +165,8 @@
                             if (errors.status == 422) {
                                 $('#spinner-border').hide()
                                 $(button).prop('disabled', false);
+                                $("#button-verifikasi-all").prop('disabled', false)
+
                                 loopErrors(errors.responseJSON.errors);
                                 return;
                             }

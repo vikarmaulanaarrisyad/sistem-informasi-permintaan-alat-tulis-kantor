@@ -57,6 +57,7 @@
                             <p>Supplier</p>
                         </a>
                     </li>
+
                     <li
                         class="nav-item {{ request()->is(['satuan', 'jenis-barang', 'barang']) ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#"
@@ -120,7 +121,8 @@
                 @if (auth()->user()->hasRole('admin'))
                     <li class="nav-header">TRANSAKSI</li>
                     <li class="nav-item">
-                        <a href="{{ route('pembelian-barang.index') }}" class="nav-link {{ request()->is('pembelian-barang*') ? 'active' : '' }}">
+                        <a href="{{ route('pembelian-barang.index') }}"
+                            class="nav-link {{ request()->is('pembelian-barang*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>
                                 Pembelian Barang
