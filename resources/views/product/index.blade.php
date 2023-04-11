@@ -23,6 +23,8 @@
                         <th>Nama</th>
                         <th>Satuan</th>
                         <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Keterangan</th>
                         <th>Aksi</th>
                     </x-slot>
                 </x-table>
@@ -67,6 +69,12 @@
                 },
                 {
                     data: 'price',
+                },
+                {
+                    data: 'stock',
+                },
+                {
+                    data: 'keterangan',
                 },
                 {
                     data: 'aksi',

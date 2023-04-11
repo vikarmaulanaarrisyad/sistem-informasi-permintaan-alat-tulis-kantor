@@ -41,6 +41,12 @@ class ProductController extends Controller
             ->addColumn('price', function ($product) {
                 return format_uang($product->price);
             })
+            ->addColumn('keterangan', function ($product) {
+                if ($product->stock < 1) {
+                    return 'Habis';
+                }
+                return 'Tersedia';
+            })
             ->addColumn('aksi', function ($product) {
                 return '
                     <div class="btn-group">
