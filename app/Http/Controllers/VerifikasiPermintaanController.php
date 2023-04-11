@@ -51,24 +51,6 @@ class VerifikasiPermintaanController extends Controller
 
     public function approval(Request $request)
     {
-        $submissions = Submission::whereIn('id', $request->ids)->get();
-
-        foreach ($submissions as $submission) {
-            $product = Product::findOrFail($submission->product_id);
-
-            // cek ketersediaan stok
-            if ($product->stock >= $submission->quantity) {
-                $product->stock -= $submission->quantity;
-                $product->save();
-            } else {
-                // jika stok tidak cukup
-                $submission->status = 'submit';
-                $submission->save();
-
-                return response()->json(['message' => 'Permintaan gagal diverifikasi. stok tidak cukup.'], 402);
-            }
-        }
-
         Submission::whereIn('id', $request->ids)->update(['status' => 'finish']);
 
         return response()->json(['message' => 'Permintaan berhasil diverifikasi.']);

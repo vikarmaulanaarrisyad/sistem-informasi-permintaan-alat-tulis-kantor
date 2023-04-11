@@ -79,10 +79,11 @@ class PermintaanBarang extends Controller
                 if ($permintaan->status == 'submit') {
                     return '
                         <div class="btn-group">
-                            <button onclick="editForm(`' . route('permintaan-barang.show', $permintaan->id) . '`)" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i> Edit</button>
+
                             <button onclick="deleteData(`' . route('permintaan-barang.destroy', $permintaan->id) . '`,`' . $permintaan->product->name . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
                         </div>
                     ';
+                    // <button onclick="editForm(`' . route('permintaan-barang.show', $permintaan->id) . '`)" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i> Edit</button>
                 } else {
                     return '';
                 }
@@ -116,8 +117,9 @@ class PermintaanBarang extends Controller
         }
 
         // Cek apakah ada permintaan barang yang belum diproses untuk produk yang sama
-        $existingSubmission = Submission::where('product_id', $request->name)
+        $existingSubmission = Submission::where('product_id', $request->product_id)
             ->where('status', 'submit')
+            ->where('user_id', Auth()->user()->id)
             ->first();
 
         if ($existingSubmission) {
@@ -142,6 +144,9 @@ class PermintaanBarang extends Controller
             $permintaan->total_price = $permintaan->product->price * $request->quantity;
             $permintaan->status = 'submit';
             $permintaan->save();
+
+            $product->stock -= $request->quantity;
+            $product->save();
 
             return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
         }
@@ -199,11 +204,15 @@ class PermintaanBarang extends Controller
     public function destroy($id)
     {
         $permintaan = Submission::findOrfail($id);
+        $product = Product::findOrfail($permintaan->product_id);
+        $product->stock += $permintaan->quantity;
+
 
         if ($permintaan->status == 'finish') {
             return response()->josn(['message' => 'Data gagal dihapus.'], 400);
         }
 
+        $product->save();
         $permintaan->delete();
 
         return response()->json(['data' => NULL, 'message' => 'Data berhasil dihapus.']);
