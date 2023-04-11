@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductIn;
 use App\Models\Semester;
+use App\Models\Submission;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -91,8 +92,9 @@ class PembelianBarangController extends Controller
 
         $product = Product::where('id', $pembelian->product_id)->first();
         $product->stock += $pembelian->quantity;
+        $product->last_stock += $pembelian->quantity;
         $product->save();
-        
+
         return response()->json(['data' => $pembelian, 'message' => 'Pembelian barang berhasil disimpan.']);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductIn;
 use App\Models\ProductOut;
 use App\Models\Semester;
 use App\Models\Submission;
@@ -127,6 +128,8 @@ class PermintaanBarang extends Controller
         }
 
         $product = Product::where('id', $request->product_id)->first();
+        $pembelian = ProductIn::where('id', $request->product_id)->first();
+
 
         if ($product->stock < $request->quantity) {
             return response()->json(['message' => 'Jumlah permintaan melebihi stok tersedia ' . $product->stock], 302);
@@ -146,6 +149,7 @@ class PermintaanBarang extends Controller
             $permintaan->save();
 
             $product->stock -= $request->quantity;
+            $product->last_stock -= $request->quantity;
             $product->save();
 
             return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
@@ -206,6 +210,7 @@ class PermintaanBarang extends Controller
         $permintaan = Submission::findOrfail($id);
         $product = Product::findOrfail($permintaan->product_id);
         $product->stock += $permintaan->quantity;
+        $product->last_stock += $permintaan->quantity;
 
 
         if ($permintaan->status == 'finish') {
