@@ -137,83 +137,13 @@
             $(`${modal} #stock`).prop('disabled', true);
 
             $('#code').prop('disabled', true).hide();
-            $('#name').prop('disabled', false);
+            $('#product_id').prop('disabled', false);
             $('#unit').prop('disabled', true).trigger('change').val("-");
             $('#categories').prop('disabled', false);
             $('#price').prop('disabled', false);
             $('#stock').prop('disabled', true).trigger('change').val('-');
 
             getDataPermintaan();
-
-        }
-
-        function editForm(url, title = 'Edit Daftar Pembelian Barang') {
-            $.get(url)
-                .done(response => {
-                    $(modal).modal('show');
-
-                    getDataPermintaan();
-
-                    $(`${modal} .modal-title`).text(title);
-                    $(`${modal} form`).attr('action', url);
-                    $(`${modal} [name=_method]`).val('PUT');
-
-                    $('#spinner-border').hide();
-                    $(button).prop('disabled', false).show();
-
-                    resetForm(`${modal} form`);
-                    loopForm(response.data);
-
-                    $('#code').prop('disabled', true).show();
-                    $('#input-code').prop('disabled', true).val(response.data.code);
-                    $('#name').prop('disabled', true);
-                    $('#unit').prop('disabled', true);
-                    $('#stock').prop('disabled', true);
-
-                    $('#name')
-                        .val(response.data.product_id)
-                        .trigger('change')
-                        .prop('disabled', true);
-
-                })
-                .fail(errors => {
-                    Swall.fire({
-                        icon: 'error',
-                        title: 'Opps! Gagal',
-                        text: errors.responseJSON.message,
-                        showConfirmButton: true,
-                    });
-                    $('#spinner-border').hide();
-                    $(button).prop('disabled', false);
-
-                });
-        }
-
-        function detailForm(url, title = 'Detail Daftar Pembelian Barang') {
-            $.get(url)
-                .done(response => {
-                    $(modal).modal('show');
-                    $(`${modal} .modal-title`).text(title);
-                    resetForm(`${modal} form`);
-                    loopForm(response.data);
-
-                    $(button).hide();
-                    $('#code').prop('disabled', true).show();
-                    $('#input-code').prop('disabled', true).val(response.data.code);
-                    $('#name').prop('disabled', true);
-                    $('#unit').prop('disabled', true);
-                    $('#categories').prop('disabled', true);
-                    $('#price').prop('disabled', true).val(format_uang(response.data.price));
-                    $('#stock').prop('disabled', true);
-
-                    let selectedCategories = [];
-                    response.data.categories.forEach(item => {
-                        selectedCategories.push(item.id);
-                    });
-                    $('#categories')
-                        .val(selectedCategories)
-                        .trigger('change');
-                })
 
         }
 
@@ -263,60 +193,10 @@
                 });
         }
 
-        function deleteData(url, name) {
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: true,
-            })
-            swalWithBootstrapButtons.fire({
-                title: 'Apakah anda yakin?',
-                text: 'Anda akan menghapus ' + name +
-                    ' !',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#aaa',
-                confirmButtonText: 'Iya, Hapus!',
-                cancelButtonText: 'Batalkan',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.post(url, {
-                            '_method': 'delete'
-                        })
-                        .done(response => {
-                            if (response.status = 200) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message,
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                })
-                                table.ajax.reload();
-                            }
-                        })
-                        .fail(errors => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Opps! Gagal!',
-                                text: errors.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            })
-                            table.ajax.reload();
-                        });
-                }
-            })
-        }
-
         function getDataPermintaan() {
 
-            $('#name').on('change', function() {
-                let productId = $('[name=name]').val();
+            $('#product_id').on('change', function() {
+                let productId = $('[name=product_id]').val();
                 if (productId) {
                     $.ajax({
                         type: "GET",

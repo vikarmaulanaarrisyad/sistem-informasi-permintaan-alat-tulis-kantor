@@ -43,8 +43,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="name">Nama Barang</label>
-                <select id="name" class="select2" name="name" autocomplete="off">
+                <label for="product_id">Nama Barang</label>
+                <select id="product_id" class="select2" name="product_id" autocomplete="off">
                     <option disabled selected>Pilih salah satu</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">

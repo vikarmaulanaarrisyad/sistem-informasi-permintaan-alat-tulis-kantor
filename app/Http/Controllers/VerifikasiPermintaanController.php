@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductIn;
 use App\Models\ProductOut;
 use App\Models\Submission;
 use Illuminate\Http\Request;
@@ -52,6 +53,18 @@ class VerifikasiPermintaanController extends Controller
     public function approval(Request $request)
     {
         Submission::whereIn('id', $request->ids)->update(['status' => 'finish']);
+
+        $permintaan = Submission::whereIn('id', $request->ids)->get();
+
+        foreach ($permintaan as  $item) {
+            $productIn = ProductIn::where('product_id', $item->product_id)->first();
+            if ($productIn) {
+                $keluar = $productIn->quantity;
+            }
+            $product = Product::findOrFail($item->product_id);
+            $product->last_stock = $product->stock;
+            $product->save();
+        }
 
         return response()->json(['message' => 'Permintaan berhasil diverifikasi.']);
     }

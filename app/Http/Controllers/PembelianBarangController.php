@@ -8,6 +8,7 @@ use App\Models\Semester;
 use App\Models\Submission;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PembelianBarangController extends Controller
@@ -72,7 +73,7 @@ class PembelianBarangController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'semester' => 'required',
-            'name' => 'required',
+            'product_id' => 'required',
             'date' => 'required',
             'quantity' => 'required',
         ]);
@@ -81,21 +82,29 @@ class PembelianBarangController extends Controller
             return response()->json(['errors' => $validator->errors(), 'message' => 'Data gagal disimpan.'], 422);
         }
 
-        $pembelian = new ProductIn();
-        $pembelian->semester_id = $request->semester;
-        $pembelian->supplier_id = $request->supplier_id;
-        $pembelian->date = $request->date;
-        $pembelian->product_id = $request->name;
-        $pembelian->quantity = $request->quantity;
-        $pembelian->total_price = $pembelian->product->price * $request->quantity;
-        $pembelian->save();
+        DB::beginTransaction();
 
-        $product = Product::where('id', $pembelian->product_id)->first();
-        $product->stock += $pembelian->quantity;
-        $product->last_stock += $pembelian->quantity;
-        $product->save();
+        try {
+            $pembelian = new ProductIn();
+            $pembelian->semester_id = $request->semester;
+            $pembelian->supplier_id = $request->supplier_id;
+            $pembelian->date = $request->date;
+            $pembelian->product_id = $request->product_id;
+            $pembelian->quantity = $request->quantity;
+            $pembelian->total_price = $pembelian->product->price * $request->quantity;
+            $pembelian->save();
 
-        return response()->json(['data' => $pembelian, 'message' => 'Pembelian barang berhasil disimpan.']);
+            $product = Product::where('id', $pembelian->product_id)->first();
+            $product->stock += $pembelian->quantity;
+            // $product->last_stock = 0;
+            $product->save();
+
+            DB::commit();
+            return response()->json(['data' => $pembelian, 'message' => 'Pembelian barang berhasil disimpan.']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['data' => $pembelian, 'message' => 'Pembelian barang gagal disimpan.'], 403);
+        }
     }
 
     /**

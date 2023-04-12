@@ -149,7 +149,7 @@ class PermintaanBarang extends Controller
             $permintaan->save();
 
             $product->stock -= $request->quantity;
-            $product->last_stock -= $request->quantity;
+            // $product->last_stock -= $request->quantity;
             $product->save();
 
             return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
@@ -210,8 +210,7 @@ class PermintaanBarang extends Controller
         $permintaan = Submission::findOrfail($id);
         $product = Product::findOrfail($permintaan->product_id);
         $product->stock += $permintaan->quantity;
-        $product->last_stock += $permintaan->quantity;
-
+        // $product->last_stock += $permintaan->quantity;
 
         if ($permintaan->status == 'finish') {
             return response()->josn(['message' => 'Data gagal dihapus.'], 400);
