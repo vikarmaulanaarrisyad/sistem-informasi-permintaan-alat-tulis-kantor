@@ -13,7 +13,8 @@ class VerifikasiPermintaanController extends Controller
 {
     public function data(Request $request)
     {
-        $permintaan = Submission::orderBy('created_at', 'DESC')->where('status', '!=', 'finish')->where('status', '!=', 'process');
+        // $permintaan = Submission::orderBy('created_at', 'DESC')->where('status', '!=', 'finish')->where('status', '!=', 'process');
+        $permintaan = Submission::orderBy('created_at', 'DESC')->where('status', '!=', 'finish');
 
 
         return datatables($permintaan)

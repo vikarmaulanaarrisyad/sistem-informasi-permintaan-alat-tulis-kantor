@@ -17,11 +17,11 @@ class PermintaanBarangNotify extends Mailable
      * Create a new message instance.
      */
 
-    public $name;
+    public $user;
 
-    public function __construct($name)
+    public function __construct($user)
     {
-        $this->name = $name;
+        $this->user = $user;
     }
 
     /**

@@ -85,6 +85,7 @@ Route::group([
     ], function () {
         // route permintaan barang
         Route::get('/permintaan-barang/data', [PermintaanBarang::class, 'data'])->name('permintaan-barang.data');
+        Route::post('/permintaan-barang/pengajuan', [PermintaanBarang::class, 'pengajuan'])->name('permintaan-barang.pengajuan');
         Route::resource('permintaan-barang', PermintaanBarang::class);
     });
 });

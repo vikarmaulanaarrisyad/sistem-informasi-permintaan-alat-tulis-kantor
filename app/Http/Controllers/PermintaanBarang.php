@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mail\PermintaanBarangNotify;
 use App\Models\Product;
-use App\Models\ProductIn;
 use App\Models\Semester;
 use App\Models\Submission;
 use Illuminate\Http\Request;
@@ -49,17 +48,24 @@ class PermintaanBarang extends Controller
                         $query->whereBetween('date', [$start_date, $end_date]);
                     }
                 )
-                ->orderBy('created_at', 'DESC');
+                ->orderBy('created_at', 'ASC');
         } else {
             $permintaan = Submission::whereRelation('user', 'user_id', $userId)
                 ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
                     $query->where('status', $request->status);
                 })
-                ->orderBy('created_at', 'DESC'); // query kosong
+                ->orderBy('created_at', 'ASC'); // query kosong
         }
 
         return datatables($permintaan)
             ->addIndexColumn()
+            ->addColumn('select_all', function ($permintaan) {
+                if ($permintaan->status == 'submit') {
+                    return '
+                    <input type="checkbox" class="submission_id" name="submission_id[]" id="submission_id" value="' . $permintaan->id . '">
+                ';
+                }
+            })
             ->addColumn('code', function ($permintaan) {
                 return '<span class="badge badge-success">' . $permintaan->code . '</span>';
             })
@@ -128,8 +134,6 @@ class PermintaanBarang extends Controller
         }
 
         $product = Product::where('id', $request->product_id)->first();
-        $pembelian = ProductIn::where('id', $request->product_id)->first();
-
 
         if ($product->stock < $request->quantity) {
             return response()->json(['message' => 'Jumlah permintaan melebihi stok tersedia ' . $product->stock], 302);
@@ -149,11 +153,7 @@ class PermintaanBarang extends Controller
             $permintaan->save();
 
             $product->stock -= $request->quantity;
-            // $product->last_stock -= $request->quantity;
             $product->save();
-
-            /* Notifikasi Email */
-            Mail::to('poltek.tegal@gmail.com')->send(new PermintaanBarangNotify(Auth()->user()->name));
 
             return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
         }
@@ -213,7 +213,6 @@ class PermintaanBarang extends Controller
         $permintaan = Submission::findOrfail($id);
         $product = Product::findOrfail($permintaan->product_id);
         $product->stock += $permintaan->quantity;
-        // $product->last_stock += $permintaan->quantity;
 
         if ($permintaan->status == 'finish') {
             return response()->josn(['message' => 'Data gagal dihapus.'], 400);
@@ -233,5 +232,22 @@ class PermintaanBarang extends Controller
         $product = Product::with('satuan')->findOrfail($id);
 
         return response()->json(['data' => $product]);
+    }
+
+    public function pengajuan(Request $request)
+    {
+        Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
+
+        $user = Submission::where('user_id', Auth()->user()->id)
+            ->where('status', 'process')
+            ->get();
+
+        if (!$user->isEmpty()) {
+            /* Notifikasi Email */
+            Mail::to('poltek.tegal@gmail.com')->send(new PermintaanBarangNotify($user));
+            // Mail::to('poltek.tegal@gmail.com')->send(new PermintaanBarangNotify($user));
+        }
+
+        return response()->json(['message' => 'Permintaan berhasil diajukan bagian logistik.']);
     }
 }

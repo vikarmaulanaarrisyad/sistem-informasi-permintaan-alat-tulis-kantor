@@ -14,6 +14,9 @@
                 <x-slot name="header">
                     <button onclick="addForm(`{{ route('permintaan-barang.store') }}`)" class="btn btn-primary btn-sm"><i
                             class="fas fa-plus-circle"></i> Tambah Data</button>
+                    <button disabled id="button-pengajuan-all"
+                        onclick="pengajuanPermintaanData(`{{ route('permintaan-barang.pengajuan') }}`)"
+                        class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Ajukan Permintaan</button>
                 </x-slot>
                 <div class="d-flex">
                     <div class="form-group mr-4">
@@ -37,6 +40,9 @@
 
                 <x-table>
                     <x-slot name="thead">
+                        <th>
+                            <input type="checkbox" name="select_all" id="select_all" class="select_all">
+                        </th>
                         <th>No</th>
                         <th>Kode</th>
                         <th>Nama Barang</th>
@@ -81,6 +87,11 @@
                 }
             },
             columns: [{
+                    data: 'select_all',
+                    searchable: false,
+                    sortable: false
+                },
+                {
                     data: 'DT_RowIndex',
                     searchable: false,
                     sortable: false
@@ -344,6 +355,91 @@
                                         '">' + unit.stock +
                                         '</option>');
                                 });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        $("#select_all").on('click', function() {
+            var isChecked = $("#select_all").prop('checked');
+            $(".submission_id").prop('checked', isChecked);
+            $("#button-pengajuan-all").prop('disabled', !isChecked);
+        })
+
+        $("#table tbody").on('click', '.submission_id', function() {
+            if ($(this).prop('checked') != true) {
+                $("#select_all").prop('checked', false);
+            }
+
+            let semua_checkbox = $("#table tbody .submission_id:checked")
+            let button_verifikasi_permintaan = (semua_checkbox.length > 0)
+            $("#button-pengajuan-all").prop('disabled', !button_verifikasi_permintaan)
+        })
+
+        function pengajuanPermintaanData(url) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true,
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Apakah anda yakin?',
+                text: 'Anda akan mengajukan permintaan barang terpilih.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Iya, Ajukan!',
+                cancelButtonText: 'Batalkan',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let checkbox_terpilih = $("#table tbody .submission_id:checked")
+                    let semua_id = []
+
+                    $.each(checkbox_terpilih, function(index, elm) {
+                        semua_id.push(elm.value)
+                    });
+
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: {
+                            ids: semua_id
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status = 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            }
+                            table.ajax.reload();
+                            $("#button-pengajuan-all").prop('disabled', true)
+                        },
+                        errors: function(errors) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Opps! Gagal',
+                                text: errors.responseJSON.message,
+                                showConfirmButton: true,
+                            });
+                            table.ajax.reload();
+                            if (errors.status == 422) {
+                                $('#spinner-border').hide()
+                                $(button).prop('disabled', false);
+                                $("#button-pengajuan-all").prop('disabled', false)
+
+                                loopErrors(errors.responseJSON.errors);
+                                return;
                             }
                         }
                     });
