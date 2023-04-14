@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PermintaanBarangNotify;
 use App\Models\Product;
 use App\Models\ProductIn;
-use App\Models\ProductOut;
 use App\Models\Semester;
 use App\Models\Submission;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class PermintaanBarang extends Controller
 {
@@ -151,6 +151,9 @@ class PermintaanBarang extends Controller
             $product->stock -= $request->quantity;
             // $product->last_stock -= $request->quantity;
             $product->save();
+
+            /* Notifikasi Email */
+            Mail::to('poltek.tegal@gmail.com')->send(new PermintaanBarangNotify(Auth()->user()->name));
 
             return response()->json(['data' => $permintaan, 'message' => 'Permintaan anda berhasil disimpan, menunggu approval dari bagian logistik.']);
         }

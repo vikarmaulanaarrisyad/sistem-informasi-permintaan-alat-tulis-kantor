@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->role->name == $role;
     }
+
+    public function scopeAdmin()
+    {
+        return $this->role_id = 1;
+    }
 }
