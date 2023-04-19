@@ -424,6 +424,7 @@
                             }
                             table.ajax.reload();
                             $("#button-pengajuan-all").prop('disabled', true)
+                            $("#select_all").prop('checked', false)
                         },
                         errors: function(errors) {
                             Swal.fire({

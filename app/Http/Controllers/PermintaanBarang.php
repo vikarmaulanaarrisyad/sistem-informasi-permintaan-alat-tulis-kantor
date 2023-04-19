@@ -54,6 +54,7 @@ class PermintaanBarang extends Controller
                 ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
                     $query->where('status', $request->status);
                 })
+                ->where('status','submit')
                 ->orderBy('created_at', 'ASC'); // query kosong
         }
 
@@ -236,16 +237,16 @@ class PermintaanBarang extends Controller
 
     public function pengajuan(Request $request)
     {
-        Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
 
         $user = Submission::where('user_id', Auth()->user()->id)
-            ->where('status', 'process')
+            ->where('status', 'submit')
             ->get();
 
         if (!$user->isEmpty()) {
+            Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
+
             /* Notifikasi Email */
             Mail::to('poltek.tegal@gmail.com')->send(new PermintaanBarangNotify($user));
-            // Mail::to('poltek.tegal@gmail.com')->send(new PermintaanBarangNotify($user));
         }
 
         return response()->json(['message' => 'Permintaan berhasil diajukan bagian logistik.']);
