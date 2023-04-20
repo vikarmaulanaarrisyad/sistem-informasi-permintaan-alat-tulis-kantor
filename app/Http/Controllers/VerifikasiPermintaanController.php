@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifikasiBarangNotify;
 use App\Models\Product;
 use App\Models\ProductIn;
 use App\Models\ProductOut;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class VerifikasiPermintaanController extends Controller
 {
@@ -53,19 +55,28 @@ class VerifikasiPermintaanController extends Controller
 
     public function approval(Request $request)
     {
-        Submission::whereIn('id', $request->ids)->update(['status' => 'finish']);
+        // Submission::whereIn('id', $request->ids)->update(['status' => 'finish']);
 
-        $permintaan = Submission::whereIn('id', $request->ids)->get();
+        $permintaan = Submission::whereIn('id', $request->ids)
+            ->get();
 
         foreach ($permintaan as  $item) {
             $productIn = ProductIn::where('product_id', $item->product_id)->first();
+            $permintaanByUser = Submission::where('user_id', $item->user_id)->get();
+
+            $userEmail = $item->user->email;
+
             if ($productIn) {
-                $keluar = $productIn->quantity;
+                $productIn->quantity;
             }
             $product = Product::findOrFail($item->product_id);
             $product->last_stock = $product->stock;
             $product->save();
+
+            /* Notifikasi Email ke user */
+            Mail::to($userEmail)->send(new VerifikasiBarangNotify($permintaanByUser));
         }
+
 
         return response()->json(['message' => 'Permintaan berhasil diverifikasi.']);
     }

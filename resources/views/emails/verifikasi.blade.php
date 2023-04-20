@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Surat Permohonan Pengadaan Barang</title>
+    <title>Bukti Permintaan Pengadaan Barang</title>
 
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('/AdminLTE/dist/css/adminlte.min.css') }}" />
@@ -116,11 +116,10 @@
                     <img src="{{ asset('assets/logo/poltek.png') }}" alt="" width="70px" height="70px" />
                 </td>
                 <td>
-                    <span id="title" style="text-align: center">
-                        <span style="color: red">POLITEKNIK</span>
-                        <span style="color: blue">HARAPAN BERSAMA</span>
+                    <span>
+                        <span style="color: red; font-size: 30px">POLITEKNIK</span>
+                        <span style="color: blue; font-size: 30px">HARAPAN BERSAMA</span>
                     </span>
-                    <br />
                 </td>
             </tr>
         </table>
@@ -133,37 +132,27 @@
             </tr>
         </table>
 
-        <table style="width: 100%">
-            <tr>
-                <td style="text-align: right">Tegal, 10 Oktober 2023</td>
-            </tr>
-        </table>
+        <br>
 
         <table style="width: 100%">
             <tr>
-                <td>Kepada Yth,</td>
-            </tr>
-            <tr height="50px">
-                <td>Ka. Bagian Logistik</td>
-            </tr>
-            <br />
-            <tr height="40px">
-                <td>di Tempat</td>
-            </tr>
-        </table>
-
-        <br />
-
-        <table style="width: 100%">
-            <tr>
-                <td>Dengan Hormat,</td>
-            </tr>
-            <tr height="80px">
-                <td>
-                    Kami bermaksud untuk melakukan pengajuan pengadaan
-                    barang untuk keperluan kami. Berikut ini adalah rincian
-                    barang yang kami butuhkan:
+                <td style="text-align: center; font-weight: bold;">
+                    <u>
+                        BUKTI PERMINTAAN PENGADAAN BARANG
+                    </u>
                 </td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td>Instansi</td>
+                <td>:</td>
+                @foreach ($permintaanByUser as $user)
+                    <td>
+                        {{ $user->user->name }}
+                    </td>
+                @endforeach
             </tr>
         </table>
 
@@ -177,7 +166,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($user as $item)
+                @foreach ($permintaanByUser as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->product->name }}</td>
@@ -187,23 +176,6 @@
                 @endforeach
             </tbody>
         </table>
-
-        <p>
-            Kami harap permohonan ini dapat diproses secepatnya dan kami
-            siap untuk menghadapi prosedur pengadaan barang yang ditetapkan.
-        </p>
-        <p>
-            Demikian surat pengajuan pengadaan barang ini kami sampaikan,
-            atas perhatian dan kerjasamanya kami ucapkan terima kasih
-        </p>
-        <br />
-        <p>Hormat Kami,</p>
-        <p>TTD</p>
-        <p>
-            @if (isset($user[0]))
-                {{ $user[0]->user->name }}
-            @endif
-        </p>
     </div>
 </body>
 
