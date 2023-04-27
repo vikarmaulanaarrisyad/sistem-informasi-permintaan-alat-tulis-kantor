@@ -55,7 +55,7 @@ class VerifikasiPermintaanController extends Controller
 
     public function approval(Request $request)
     {
-        // Submission::whereIn('id', $request->ids)->update(['status' => 'finish']);
+        Submission::whereIn('id', $request->ids)->update(['status' => 'finish']);
 
         $permintaan = Submission::whereIn('id', $request->ids)
             ->get();
@@ -74,7 +74,7 @@ class VerifikasiPermintaanController extends Controller
             $product->save();
 
             /* Notifikasi Email ke user */
-            Mail::to($userEmail)->send(new VerifikasiBarangNotify($permintaanByUser));
+            // Mail::to($userEmail)->send(new VerifikasiBarangNotify($permintaanByUser));
         }
 
 
