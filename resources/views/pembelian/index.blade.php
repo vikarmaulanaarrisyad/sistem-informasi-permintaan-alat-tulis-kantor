@@ -20,12 +20,17 @@
                     <tr>
                         <th>Total Item</th>
                         <td>:</td>
-                        <td id="total-item">{{ $totalItemPembelian }}</td>
+                        <td id="total-item">0</td>
+                    </tr>
+                    <tr>
+                        <th>Quantity</th>
+                        <td>:</td>
+                        <td id="qty">0</td>
                     </tr>
                     <tr>
                         <th>Total</th>
                         <td>:</td>
-                        <td id="total-pembelian">Rp. {{ format_uang($totalItemPembelianPrice) }}</td>
+                        <td id="total-pembelian">0</td>
                     </tr>
                 </table>
 
@@ -72,6 +77,7 @@
             $('#spinner-border').hide();
             $('[name=start_date2]').val("")
             $('[name=end_date2]').val("")
+            updateData();
 
         });
 
@@ -253,6 +259,7 @@
                 dataType: 'json',
                 success: function(data) {
                     $('#total-item').text(data.totalItemPembelian);
+                    $('#qty').text(data.quantity);
                     $('#total-pembelian').text('Rp. ' + format_uang(data.totalItemPembelianPrice));
                 }
             });

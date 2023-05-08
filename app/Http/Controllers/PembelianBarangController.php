@@ -164,9 +164,11 @@ class PembelianBarangController extends Controller
         $semesterAktif = $this->semesterAktif();
         $totalItemPembelian = ProductIn::where('semester_id', $semesterAktif->id)->get()->count();
         $totalItemPembelianPrice = ProductIn::where('semester_id', $semesterAktif->id)->get()->sum('total_price');
+        $quantity = ProductIn::where('semester_id', $semesterAktif->id)->get()->sum('quantity');
 
         return response()->json([
             'totalItemPembelian' => $totalItemPembelian,
+            'quantity' => $quantity,
             'totalItemPembelianPrice' => $totalItemPembelianPrice,
         ]);
     }
