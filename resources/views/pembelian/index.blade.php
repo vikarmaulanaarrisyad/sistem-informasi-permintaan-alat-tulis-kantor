@@ -15,8 +15,21 @@
                     <button onclick="addForm(`{{ route('pembelian-barang.store') }}`)" class="btn btn-primary btn-sm"><i
                             class="fas fa-plus-circle"></i> Tambah Data</button>
                 </x-slot>
-                <div class="d-flex">
 
+                <table class="table-bordered-none mb-3">
+                    <tr>
+                        <th>Total Item</th>
+                        <td>:</td>
+                        <td id="total-item">{{ $totalItemPembelian }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <td>:</td>
+                        <td id="total-pembelian">Rp. {{ format_uang($totalItemPembelianPrice) }}</td>
+                    </tr>
+                </table>
+
+                <div class="d-flex">
                     <div class="d-flex">
                         <div class="form-group">
                             <label for="my-input">Filter tanggal</label>
@@ -24,6 +37,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <x-table>
                     <x-slot name="thead">
@@ -107,6 +121,10 @@
             table.ajax.reload();
         });
 
+        $('input[name="datefilter"]').on('change.daterangepicker', function() {
+            table.ajax.reload();
+        });
+
         $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
             table.ajax.reload();
@@ -115,7 +133,6 @@
         $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
             table.ajax.reload();
-
         });
 
         $('[name=status2]').on('change', function() {
@@ -144,11 +161,9 @@
             $('#stock').prop('disabled', true).trigger('change').val('-');
 
             getDataPermintaan();
-
         }
 
         function submitForm(originalForm) {
-
             $(button).prop('disabled', true);
             $('#spinner-border').show();
 
@@ -173,6 +188,8 @@
                     }
                     $(button).prop('disabled', false);
                     $('#spinner-border').hide();
+                    updateData();
+
                     table.ajax.reload();
                 })
                 .fail(errors => {
@@ -225,6 +242,18 @@
                             }
                         }
                     });
+                }
+            });
+        }
+
+        function updateData() {
+            $.ajax({
+                url: '{{ route('pembelian-barang.get_data') }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#total-item').text(data.totalItemPembelian);
+                    $('#total-pembelian').text('Rp. ' + format_uang(data.totalItemPembelianPrice));
                 }
             });
         }

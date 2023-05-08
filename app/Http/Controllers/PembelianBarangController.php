@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductIn;
 use App\Models\Semester;
-use App\Models\Submission;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +17,13 @@ class PembelianBarangController extends Controller
      */
     public function index()
     {
-        $semesterAktif = Semester::active()->first();
+        $semesterAktif = $this->semesterAktif();
         $products = Product::with('satuan', 'category_product')->get();
         $suppliers = Supplier::all();
+        $totalItemPembelian = ProductIn::where('semester_id', $semesterAktif->id)->get()->count();
+        $totalItemPembelianPrice = ProductIn::where('semester_id', $semesterAktif->id)->get()->sum('total_price');
 
-        return view('pembelian.index', compact('semesterAktif', 'products', 'suppliers'));
+        return view('pembelian.index', compact('semesterAktif', 'products', 'suppliers', 'totalItemPembelian', 'totalItemPembelianPrice'));
     }
 
     /**
@@ -30,7 +31,23 @@ class PembelianBarangController extends Controller
      */
     public function data(Request $request)
     {
-        $pembelian = ProductIn::all();
+        $dateRange = $request->input('datefilter');
+        if (strpos($dateRange, ' - ') !== false && $dateRange != "") {
+            $dateParts = explode(' - ', $dateRange);
+
+            $startDate = $dateParts[0];
+            $endDate = $dateParts[1];
+
+            $semesterAktif = $this->semesterAktif();
+            $pembelian = ProductIn::where('semester_id', $semesterAktif->id)
+                ->when($request->datefilter != "", function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('date', [$startDate, $endDate]);
+                });
+        } else {
+            $semesterAktif = $this->semesterAktif();
+            $pembelian = ProductIn::where('semester_id', $semesterAktif->id);
+        }
+
 
         return datatables($pembelian)
             ->addIndexColumn()
@@ -96,7 +113,6 @@ class PembelianBarangController extends Controller
 
             $product = Product::where('id', $pembelian->product_id)->first();
             $product->stock += $pembelian->quantity;
-            // $product->last_stock = 0;
             $product->save();
 
             DB::commit();
@@ -138,4 +154,29 @@ class PembelianBarangController extends Controller
     {
         //
     }
+
+
+    /**
+     * Mendapatkan data Item Pembelian.
+     */
+    public function getData()
+    {
+        $semesterAktif = $this->semesterAktif();
+        $totalItemPembelian = ProductIn::where('semester_id', $semesterAktif->id)->get()->count();
+        $totalItemPembelianPrice = ProductIn::where('semester_id', $semesterAktif->id)->get()->sum('total_price');
+
+        return response()->json([
+            'totalItemPembelian' => $totalItemPembelian,
+            'totalItemPembelianPrice' => $totalItemPembelianPrice,
+        ]);
+    }
+
+    /**
+     * Mendapatkan semester aktif.
+     */
+    public function semesterAktif()
+    {
+        return Semester::active()->first();
+    }
+
 }

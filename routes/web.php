@@ -75,8 +75,8 @@ Route::group([
 
         // route pembelian barang
         Route::get('/pembelian-barang/data', [PembelianBarangController::class, 'data'])->name('pembelian-barang.data');
+        Route::get('/pembelian-barang/get-data', [PembelianBarangController::class, 'getData'])->name('pembelian-barang.get_data');
         Route::resource('/pembelian-barang', PembelianBarangController::class);
-
     });
 
 
