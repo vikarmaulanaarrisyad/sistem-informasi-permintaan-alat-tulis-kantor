@@ -69,7 +69,8 @@ class PengeluaranBarangController extends Controller
     {
         $users = User::whereRelation('role', 'role_id', 2)->get();
         $semesters = Semester::orderBy('created_at', 'DESC')->get();
+        $semesterAktif = Semester::active()->pluck('id');
 
-        return view('pengeluaran.index', compact(['users', 'semesters']));
+        return view('pengeluaran.index', compact(['users', 'semesters', 'semesterAktif']));
     }
 }

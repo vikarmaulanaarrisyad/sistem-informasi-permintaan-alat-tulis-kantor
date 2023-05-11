@@ -159,7 +159,7 @@ class PembelianBarangController extends Controller
     /**
      * Mendapatkan data Item Pembelian.
      */
-    public function getData()
+    public function getData(Request $request)
     {
         $semesterAktif = $this->semesterAktif();
         $totalItemPembelian = ProductIn::where('semester_id', $semesterAktif->id)->get()->count();
@@ -180,5 +180,4 @@ class PembelianBarangController extends Controller
     {
         return Semester::active()->first();
     }
-
 }

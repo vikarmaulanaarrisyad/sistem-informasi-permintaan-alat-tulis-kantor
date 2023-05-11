@@ -10,33 +10,44 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
+
             <x-card>
-                <div class="d-flex justify-evenly">
-                    <div class="form-group mr-1">
-                        <select name="user2" id="user2" class="custom-select">
-                            <option value="" selected>Semua status</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
+                <x-slot name="header">
+                    <h4>Filter Barang Keluar</h4>
+                </x-slot>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="text" class="form-control float-right" name="datefilter"
+                                placeholder="Filter tanggal">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select name="user2" id="user2" class="custom-select">
+                                <option value="" selected>Semua status</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group mr-1">
+                            <select name="semester" id="semester" class="custom-select">
+                                <option value="" selected>Semua semester</option>
+                                @foreach ($semesters as $semester)
+                                    <option value="{{ $semester->id }}" {{ $semester->id == $semesterAktif[0] ? 'selected' : '' }}>{{ $semester->name }} - {{ $semester->semester }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="form-group mr-1">
-                        <select name="semester" id="semester" class="custom-select">
-                            <option value="" selected>Semua semester</option>
-                            @foreach ($semesters as $semester)
-                                <option value="{{ $semester->id }}">{{ $semester->name }} - {{ $semester->semester }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" class="form-control float-right" name="datefilter"
-                            placeholder="Filter tanggal">
-                    </div>
                 </div>
+            </x-card>
 
+            <x-card>
                 <x-table>
                     <x-slot name="thead">
                         <th>No</th>
@@ -120,7 +131,7 @@
 
         $('[name=user2]').on('change', function() {
             table.ajax.reload();
-
+            $('input[name="datefilter"]').val('')
         });
 
         $('[name=semester]').on('change', function() {
