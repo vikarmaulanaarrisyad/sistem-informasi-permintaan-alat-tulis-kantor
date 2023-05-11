@@ -129,7 +129,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrfail($id);
         $product->categories = $product->category_product;
-        $product->unit = $product->satuan->id;
+        $product->unit = $product->satuan->name;
 
 
         return response()->json(['data' => $product]);

@@ -32,6 +32,7 @@
         </div>
     </div>
     @include('product.form')
+    @includeIf('product.detail')
 @endsection
 
 @includeIf('include.datatables')
@@ -40,6 +41,7 @@
 @push('scripts')
     <script>
         let modal = '#modal-form';
+        let modalDetail = '#modal-detail';
         let button = '#submitBtn';
         let table;
 
@@ -47,7 +49,7 @@
             $('#spinner-border').hide();
         });
 
-        table = $('.table').DataTable({
+        table = $('#table').DataTable({
             processing: true,
             autoWidth: false,
             ajax: {
@@ -152,27 +154,14 @@
         function detailForm(url, title = 'Detail Daftar Barang') {
             $.get(url)
                 .done(response => {
-                    $(modal).modal('show');
-                    $(`${modal} .modal-title`).text(title);
-                    resetForm(`${modal} form`);
-                    loopForm(response.data);
-
-                    $(button).hide();
-                    $('#code').prop('disabled', true).show();
-                    $('#input-code').prop('disabled', true).val(response.data.code);
-                    $('#name').prop('disabled', true);
-                    $('#unit').prop('disabled', true);
-                    $('#categories').prop('disabled', true);
-                    $('#price').prop('disabled', true).val(format_uang(response.data.price));
-                    $('#stock').prop('disabled', true);
-
-                    let selectedCategories = [];
-                    response.data.categories.forEach(item => {
-                        selectedCategories.push(item.id);
-                    });
-                    $('#categories')
-                        .val(selectedCategories)
-                        .trigger('change');
+                    $(modalDetail).modal('show');
+                    $(`${modalDetail} .modal-title`).text(title);
+                    $('.kode-barang').text(response.data.code)
+                    $('.nama-barang').text(response.data.name)
+                    $('.satuan-barang').text(response.data.unit)
+                    $('.harga-barang').text(response.data.price)
+                    $('.stok-barang').text(response.data.stock)
+                    $('.jenis-barang').text(response.data.categories[0]['name'])
                 })
 
         }
