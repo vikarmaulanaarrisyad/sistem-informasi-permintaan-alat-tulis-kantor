@@ -140,13 +140,43 @@
                     </li>
 
                     <li class="nav-header">REPORT</li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->is('orders*') ? 'active' : '' }}">
+                    {{-- <li class="nav-item">
+                        <a href="{{ route('report.index') }}"
+                            class="nav-link {{ request()->is('report*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-file-pdf"></i>
                             <p>
-                                Rekap Permintaan
+                                Laporan
                             </p>
                         </a>
+                    </li> --}}
+
+                    <li
+                        class="nav-item {{ request()->is(['report/barang-masuk']) ? 'menu-is-opening menu-open' : '' }}">
+                        <a href="#"
+                            class="nav-link {{ request()->is(['report/barang-masuk']) ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-pdf"></i>
+                            <p>
+                                Laporan
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview"
+                            style="{{ request()->is(['report/barang-masuk']) ? 'display: block;' : 'display: none;' }}">
+                            <li class="nav-item">
+                                <a href="{{ route('report.barang-masuk.index') }}"
+                                    class="nav-link {{ request()->is('report/barang-masuk') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Barang Masuk</p>
+                                </a>
+                            </li>
+                            {{-- <li class="nav-item">
+                                <a href="#"
+                                    class="nav-link {{ request()->is('jenis-barang*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Barang Keluar</p>
+                                </a>
+                            </li> --}}
+                        </ul>
                     </li>
                 @endif
 

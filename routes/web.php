@@ -7,6 +7,8 @@ use App\Http\Controllers\{
     PengeluaranBarangController,
     PermintaanBarang,
     ProductController,
+    ReportBarangMasukController,
+    ReportController,
     SatuanController,
     SemesterController,
     StokBarangMasukController,
@@ -69,14 +71,23 @@ Route::group([
         Route::get('/verifikasi-permintaan', [VerifikasiPermintaanController::class, 'index'])->name('verifikasi-permintaan.index');
         Route::post('/verifikasi-permintaan/approval', [VerifikasiPermintaanController::class, 'approval'])->name('verifikasi-permintaan.approval');
 
-        // route pengeluaran barang
-        Route::get('/pengeluaran-barang/data', [PengeluaranBarangController::class, 'data'])->name('pengeluaran-barang.data');
-        Route::get('/pengeluaran-barang', [PengeluaranBarangController::class, 'index'])->name('pengeluaran-barang.index');
-
         // route pembelian barang
         Route::get('/pembelian-barang/data', [PembelianBarangController::class, 'data'])->name('pembelian-barang.data');
         Route::get('/pembelian-barang/get-data', [PembelianBarangController::class, 'getData'])->name('pembelian-barang.get_data');
         Route::resource('/pembelian-barang', PembelianBarangController::class);
+
+        // route pengeluaran barang
+        Route::get('/pengeluaran-barang/data', [PengeluaranBarangController::class, 'data'])->name('pengeluaran-barang.data');
+        Route::get('/pengeluaran-barang', [PengeluaranBarangController::class, 'index'])->name('pengeluaran-barang.index');
+
+        // Report
+        Route::get('/report', [ReportController::class,'index'])->name('report.index');
+        Route::post('/report/post', [ReportController::class,'data'])->name('report.post');
+        Route::get('/report/data', [ReportController::class, 'data'])->name('report.data');
+
+        // Report Barang Masuk
+        Route::get('/report/barang-masuk',[ReportBarangMasukController::class, 'index'])->name('report.barang-masuk.index');
+        Route::get('/report/barang-masuk/data/{start}/{end}',[ReportBarangMasukController::class, 'data'])->name('report.barang.masuk.data');
     });
 
 
