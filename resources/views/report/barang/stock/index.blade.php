@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Data Barang Masuk')
+@section('title', 'Laporan Data Stock Barang')
 
 @section('breadcrumb')
     @parent
@@ -26,7 +26,7 @@
 
             <x-card>
                 <x-slot name="header">
-                    <h5>Laporan Data Barang Masuk Periode Tanggal
+                    <h5>Laporan Data Stok Barang Periode Tanggal
                         {{ tanggal_indonesia($start) . ' s/d ' . tanggal_indonesia($end) }}
                     </h5>
                 </x-slot>
@@ -35,15 +35,16 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Barang</th>
-                            <th>Jumlah</th>
+                            <th>Stok Masuk</th>
+                            <th>Stok Keluar</th>
+                            <th>Sisa Stok</th>
                         </tr>
                     </x-slot>
                 </x-table>
             </x-card>
         </div>
     </div>
-    @include('report.barang.masuk.form')
+    @include('report.barang.stock.form')
 @endsection
 
 @includeIf('include.datepicker')
@@ -75,13 +76,19 @@
                     searchable: false,
                     sortable: false
                 },
+
                 {
-                    data: 'product',
+                    data: 'stok_masuk',
                     searchable: false,
                     sortable: false
                 },
                 {
-                    data: 'stock',
+                    data: 'stok_keluar',
+                    searchable: false,
+                    sortable: false
+                },
+                {
+                    data: 'sisa_stok',
                     searchable: false,
                     sortable: false
                 },

@@ -16,7 +16,7 @@
             format: 'YYYY-MM-DD',
             locale: 'id',
             minDate: new Date(),
-            daysOfWeekDisabled: [0, 6], // untuk membatasi tanggal minimum pada hari ini
+            daysOfWeekDisabled: [0, 7], // untuk membatasi tanggal minimum pada hari ini
             autoclose: true,
 
         });

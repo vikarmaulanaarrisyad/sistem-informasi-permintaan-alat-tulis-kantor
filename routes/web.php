@@ -82,8 +82,7 @@ Route::group([
 
         // Report
         Route::get('/report', [ReportController::class,'index'])->name('report.index');
-        Route::post('/report/post', [ReportController::class,'data'])->name('report.post');
-        Route::get('/report/data', [ReportController::class, 'data'])->name('report.data');
+        Route::get('/report/data/{start}/{end}', [ReportController::class, 'data'])->name('report.data');
 
         // Report Barang Masuk
         Route::get('/report/barang-masuk',[ReportBarangMasukController::class, 'index'])->name('report.barang-masuk.index');

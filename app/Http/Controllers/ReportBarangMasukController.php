@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\ProductIn;
+use App\Models\Semester;
+use App\Models\Submission;
 use Illuminate\Http\Request;
 
 class ReportBarangMasukController extends Controller
@@ -24,9 +27,16 @@ class ReportBarangMasukController extends Controller
     {
         $data = [];
         $i = 1;
+        $semesterId = $this->semesterAktif();
+        $previousStock = 0;
 
         while (strtotime($start) <= strtotime($end)) {
             $barangMasuk = ProductIn::where('date', 'LIKE', "%$start%")
+            ->where('semester_id', $semesterId)
+                ->get();
+
+            $barangKeluar = Submission::where('date', 'LIKE', "%$start%")
+            ->where('semester_id', $semesterId)
                 ->get();
 
             $separate = '';
@@ -36,24 +46,26 @@ class ReportBarangMasukController extends Controller
             $row['DT_RowIndex'] = $i++;
             $row['tanggal'] = tanggal_indonesia($start);
 
-            if (!$barangMasuk->isEmpty()) {
-                $row['product'] = $barangMasuk[0]->product->name;
-                $row['stock'] = $barangMasuk[0]->quantity;
-            } else {
-                $row['product'] = '-';
-                $row['stock'] = 0;
-            }
+            $stokMasuk = $barangMasuk->sum('quantity');
+            $stokKeluar = $barangKeluar->sum('quantity');
+            $sisaStok = $previousStock + $stokMasuk - $stokKeluar;
+
+            $row['stok_masuk'] = $stokMasuk;
+            $row['stok_keluar'] = $stokKeluar;
+            $row['sisa_stok'] = $sisaStok;
 
             array_push($data, $row);
 
+            $previousStock = $sisaStok;
             $start = date('Y-m-d', strtotime('+1 day', strtotime($start)));
         }
 
         $data[] = [
             'DT_RowIndex' => '',
             'tanggal' => '',
-            'product' => '',
-            'stock' => '',
+            'stok_masuk' => '',
+            'stok_keluar' => '',
+            'sisa_stok' => '',
         ];
 
         return $data;
@@ -66,5 +78,10 @@ class ReportBarangMasukController extends Controller
         return datatables($data)
             ->escapeColumns([])
             ->make(true);
+    }
+
+    public function semesterAktif()
+    {
+        return Semester::active()->pluck('id')->first();
     }
 }
