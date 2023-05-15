@@ -42,34 +42,32 @@
                     </a>
                 </li>
                 @if (auth()->user()->hasRole('admin'))
-                    <li class="nav-header">DATA MASTER</li>
-                    <li class="nav-item">
-                        <a href="{{ route('semester.index') }}"
-                            class="nav-link {{ request()->is('semester*') ? 'active' : '' }}">
-                            <i class="fas fa-book nav-icon"></i>
-                            <p>Semester</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('supplier.index') }}"
-                            class="nav-link {{ request()->is('supplier*') ? 'active' : '' }}">
-                            <i class="fas fa-users nav-icon"></i>
-                            <p>Supplier</p>
-                        </a>
-                    </li>
-
                     <li
-                        class="nav-item {{ request()->is(['satuan', 'jenis-barang', 'barang']) ? 'menu-is-opening menu-open' : '' }}">
+                        class="nav-item {{ request()->is(['semester', 'supplier', 'satuan', 'jenis-barang', 'barang']) ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link {{ request()->is(['satuan*', 'jenis-barang', 'barang']) ? 'active' : '' }}">
+                            class="nav-link {{ request()->is(['semester*', 'supplier*', 'satuan*', 'jenis-barang', 'barang']) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cube"></i>
                             <p>
-                                Barang
+                                Master Data
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview"
-                            style="{{ request()->is(['satuan*', 'jenis-barang*', 'barang*']) ? 'display: block;' : 'display: none;' }}">
+                            style="{{ request()->is(['semester*', 'supplier*', 'satuan*', 'jenis-barang*', 'barang*']) ? 'display: block;' : 'display: none;' }}">
+                            <li class="nav-item">
+                                <a href="{{ route('semester.index') }}"
+                                    class="nav-link {{ request()->is('semester*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Semester</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('supplier.index') }}"
+                                    class="nav-link {{ request()->is('supplier*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Supplier</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="{{ route('satuan.index') }}"
                                     class="nav-link {{ request()->is('satuan*') ? 'active' : '' }}">
@@ -88,7 +86,7 @@
                                 <a href="{{ route('barang.index') }}"
                                     class="nav-link {{ request()->is('barang*') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Data Barang</p>
+                                    <p>Barang</p>
                                 </a>
                             </li>
 
@@ -100,60 +98,56 @@
                             class="nav-link {{ request()->is('permintaan-barang') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-folder-open"></i>
                             <p>
-                                Data Permintaan Barang
+                                Pengajuan Barang
                             </p>
                         </a>
                     </li>
                 @endif
                 @if (auth()->user()->hasRole('admin'))
-                    <li class="nav-header">PERMINTAAN</li>
                     <li class="nav-item">
                         <a href="{{ route('verifikasi-permintaan.index') }}"
                             class="nav-link {{ request()->is('verifikasi-permintaan*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-check-circle"></i>
                             <p>
-                                Verifikasi Permintaan
+                                Verifikasi Pengajuan
                             </p>
                         </a>
                     </li>
                 @endif
 
                 @if (auth()->user()->hasRole('admin'))
-                    <li class="nav-header">TRANSAKSI</li>
-                    <li class="nav-item">
-                        <a href="{{ route('pembelian-barang.index') }}"
-                            class="nav-link {{ request()->is('pembelian-barang*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-shopping-cart"></i>
+                    <li class="nav-item {{ request()->is(['pembelian-barang','pengeluaran-barang']) ? 'menu-is-opening menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is(['pembelian-barang','pengeluaran-barang']) ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-list"></i>
                             <p>
-                                Pembelian Barang
+                                Transaksi
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview"
+                            style="{{ request()->is(['pembelian-barang','pengeluaran-barang']) ? 'display: block;' : 'display: none;' }}">
+                            <li class="nav-item">
+                                <a href="{{ route('pembelian-barang.index') }}"
+                                    class="nav-link {{ request()->is('pembelian-barang*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Barang Masuk
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('pengeluaran-barang.index') }}"
+                                    class="nav-link {{ request()->is('pengeluaran-barang*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Barang Keluar
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('pengeluaran-barang.index') }}"
-                            class="nav-link {{ request()->is('pengeluaran-barang*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-shopping-cart"></i>
-                            <p>
-                                Pengeluaran Barang
-                            </p>
-                        </a>
-                    </li>
-
-                    <li class="nav-header">REPORT</li>
-                    {{-- <li class="nav-item">
-                        <a href="{{ route('report.index') }}"
-                            class="nav-link {{ request()->is('report*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-pdf"></i>
-                            <p>
-                                Laporan
-                            </p>
-                        </a>
-                    </li> --}}
-
-                    <li
-                        class="nav-item {{ request()->is(['report']) ? 'menu-is-opening menu-open' : '' }}">
-                        <a href="#"
-                            class="nav-link {{ request()->is(['report']) ? 'active' : '' }}">
+                    <li class="nav-item {{ request()->is(['report']) ? 'menu-is-opening menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is(['report']) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-file-pdf"></i>
                             <p>
                                 Laporan
@@ -169,31 +163,18 @@
                                     <p>Stok Barang</p>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a href="#"
-                                    class="nav-link {{ request()->is('jenis-barang*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Barang Keluar</p>
-                                </a>
-                            </li> --}}
                         </ul>
                     </li>
-                @endif
-
-                @if (auth()->user()->hasRole('admin'))
-                    <li class="nav-header">SISTEM</li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-cogs"></i>
+                            <i class="nav-icon fas fa-sign-in-alt"></i>
                             <p>
-                                Pengaturan
+                                Keluar
                             </p>
                         </a>
                     </li>
                 @endif
             </ul>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>
