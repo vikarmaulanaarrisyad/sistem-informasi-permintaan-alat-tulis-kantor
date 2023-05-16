@@ -70,6 +70,7 @@ Route::group([
         Route::get('/verifikasi-permintaan/data', [VerifikasiPermintaanController::class, 'data'])->name('verifikasi-permintaan.data');
         Route::get('/verifikasi-permintaan', [VerifikasiPermintaanController::class, 'index'])->name('verifikasi-permintaan.index');
         Route::post('/verifikasi-permintaan/approval', [VerifikasiPermintaanController::class, 'approval'])->name('verifikasi-permintaan.approval');
+        Route::get('/verifikasi-permintaan/{id}/detail', [VerifikasiPermintaanController::class, 'detail'])->name('verifikasi-permintaan.detail');
 
         // route pembelian barang
         Route::get('/pembelian-barang/data', [PembelianBarangController::class, 'data'])->name('pembelian-barang.data');

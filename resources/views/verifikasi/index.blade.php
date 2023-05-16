@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Verifikasi Permintaan')
+@section('title', 'Verifikasi Pengajuan')
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Verifikasi Permintaan</li>
+    <li class="breadcrumb-item active">Verifikasi Pengajuan</li>
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
                 <x-slot name="header">
                     <button disabled id="button-verifikasi-all"
                         onclick="verifikasiPermintaanTerpilih(`{{ route('verifikasi-permintaan.approval') }}`)"
-                        class="btn btn-primary btn-sm"><i class="fas fa-check-circle"></i> Verifikasi Permintaan</button>
+                        class="btn btn-primary btn-sm"><i class="fas fa-check-circle"></i> Verifikasi Pengajuan</button>
                 </x-slot>
 
                 <x-table class="table-verifikasi-permintaan">
@@ -23,13 +23,12 @@
                             <input type="checkbox" name="select_all" id="select_all" class="select_all">
                         </th>
                         <th>No</th>
-                        <th>Prodi</th>
-                        <th>Kode</th>
-                        <th>Nama Barang</th>
-                        <th>Jumlah</th>
-                        <th>Satuan</th>
-                        <th>Harga</th>
+                        <th>Mengajukan</th>
+                        <th>Semester</th>
+                        <th>Jumlah Item</th>
                         <th>Total</th>
+                        <th>Status Pengajuan</th>
+                        <th>Aksi</th>
                     </x-slot>
                 </x-table>
 
@@ -72,22 +71,29 @@
                     data: 'prodi'
                 },
                 {
-                    data: 'code'
+                    data: 'semester_ajuan',
+                    searchable: false,
+                    sortable: false
                 },
                 {
-                    data: 'product'
-                },
-                {
-                    data: 'quantity'
-                },
-                {
-                    data: 'unit',
-                },
-                {
-                    data: 'price',
+                    data: 'total_ajuan',
+                    searchable: false,
+                    sortable: false
                 },
                 {
                     data: 'total',
+                    searchable: false,
+                    sortable: false
+                },
+                {
+                    data: 'status_pengajuan',
+                    searchable: false,
+                    sortable: false
+                },
+                {
+                    data: 'aksi',
+                    searchable: false,
+                    sortable: false
                 },
             ]
         });
@@ -118,7 +124,7 @@
             })
             swalWithBootstrapButtons.fire({
                 title: 'Apakah anda yakin?',
-                text: 'Anda akan menyetujui permintaan barang.',
+                text: 'Anda akan menyetujui pengajuan barang.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
