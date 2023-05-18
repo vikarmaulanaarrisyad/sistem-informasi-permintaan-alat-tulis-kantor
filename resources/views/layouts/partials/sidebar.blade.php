@@ -43,9 +43,9 @@
                 </li>
                 @if (auth()->user()->hasRole('admin'))
                     <li
-                        class="nav-item {{ request()->is(['semester', 'supplier', 'satuan', 'jenis-barang', 'barang']) ? 'menu-is-opening menu-open' : '' }}">
+                        class="nav-item {{ request()->is(['user', 'semester', 'supplier', 'satuan', 'jenis-barang', 'barang']) ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link {{ request()->is(['semester*', 'supplier*', 'satuan*', 'jenis-barang', 'barang']) ? 'active' : '' }}">
+                            class="nav-link {{ request()->is(['user*', 'semester*', 'supplier*', 'satuan*', 'jenis-barang', 'barang']) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cube"></i>
                             <p>
                                 Master Data
@@ -53,7 +53,14 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview"
-                            style="{{ request()->is(['semester*', 'supplier*', 'satuan*', 'jenis-barang*', 'barang*']) ? 'display: block;' : 'display: none;' }}">
+                            style="{{ request()->is(['user*','semester*', 'supplier*', 'satuan*', 'jenis-barang*', 'barang*']) ? 'display: block;' : 'display: none;' }}">
+                            <li class="nav-item">
+                                <a href="{{ route('user.index') }}"
+                                    class="nav-link {{ request()->is('user*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>User</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="{{ route('semester.index') }}"
                                     class="nav-link {{ request()->is('semester*') ? 'active' : '' }}">

@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     StokBarangMasukController,
     StokController,
     SupplierController,
+    UserController,
     VerifikasiPermintaanController,
 };
 use Illuminate\Support\Facades\Route;
@@ -88,6 +89,14 @@ Route::group([
         // Report Barang Masuk
         Route::get('/report/barang-masuk',[ReportBarangMasukController::class, 'index'])->name('report.barang-masuk.index');
         Route::get('/report/barang-masuk/data/{start}/{end}',[ReportBarangMasukController::class, 'data'])->name('report.barang.masuk.data');
+
+        // Route Users
+        Route::get('/user/data',[UserController::class, 'data'])->name('user.data');
+        Route::resource('/user', UserController::class);
+        Route::get('/user/{id}/detail', [UserController::class, 'detail'])->name('user.detail');
+        Route::put('/user/{id}/update_status',[UserController::class, 'updateStatus'])->name('user.update_status');
+
+
     });
 
 

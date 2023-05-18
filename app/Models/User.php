@@ -23,11 +23,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -72,5 +68,43 @@ class User extends Authenticatable
     public function scopeAdmin()
     {
         return $this->role_id = 1;
+    }
+
+    public function statusColor()
+    {
+        $color = '';
+
+        switch ($this->status) {
+            case 'aktif':
+                $color = 'success';
+                break;
+
+            case 'tidak aktif':
+                $color = 'danger';
+                break;
+
+            default:
+                break;
+        }
+        return $color;
+    }
+
+    public function statusText()
+    {
+        $text = '';
+
+        switch ($this->status) {
+            case 'aktif':
+                $text = 'Aktif';
+                break;
+
+            case 'tidak aktif':
+                $text = 'Tidak Aktif';
+                break;
+
+            default:
+                break;
+        }
+        return $text;
     }
 }
