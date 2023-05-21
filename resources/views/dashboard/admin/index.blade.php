@@ -8,5 +8,6 @@
 @endsection
 
 @section('content')
-    Halaman Admin
+    @include('dashboard.admin._small_box')
+    
 @endsection
