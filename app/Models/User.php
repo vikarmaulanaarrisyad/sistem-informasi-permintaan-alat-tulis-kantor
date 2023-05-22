@@ -70,7 +70,7 @@ class User extends Authenticatable
         return $this->role_id = 1;
     }
 
-    public function scopeUser()
+    public function scopeUserAccount()
     {
         return $this->role_id = 2;
     }

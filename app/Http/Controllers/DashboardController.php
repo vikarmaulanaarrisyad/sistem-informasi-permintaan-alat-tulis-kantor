@@ -20,7 +20,7 @@ class DashboardController extends Controller
 
         if (Auth::user()->hasRole('admin')) {
 
-                $users =   User::user();
+                $users = User::where('role_id',2)->count();
                 $kategori = Category::count();
                 $totalBarang = Product::count();
                 $supplier = Supplier::count();

@@ -35,6 +35,7 @@ class UserFactory extends Factory
             'profile_photo_path' => null,
             'current_team_id' => null,
             'role_id' => 2,
+            'password_user' => 'password',
         ];
     }
 
