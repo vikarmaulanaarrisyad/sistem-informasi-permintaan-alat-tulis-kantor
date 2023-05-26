@@ -54,7 +54,7 @@ class PermintaanBarang extends Controller
                 ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
                     $query->where('status', $request->status);
                 })
-                ->where('status','submit')
+                ->where('status', 'submit')
                 ->orderBy('created_at', 'ASC'); // query kosong
         }
 
@@ -75,6 +75,9 @@ class PermintaanBarang extends Controller
             })
             ->addColumn('quantity', function ($permintaan) {
                 return $permintaan->quantity;
+                // return '
+                //     <input onchange="updateQuantity(`'.route('permintaan-barang.update_quantity', $permintaan->id).'`)" type="number" name="quantity" min="1" class="form-control" value="' . $permintaan->quantity . '" style="width:100px;">
+                // ';
             })
             ->addColumn('unit', function ($permintaan) {
                 return $permintaan->product->satuan->name;
