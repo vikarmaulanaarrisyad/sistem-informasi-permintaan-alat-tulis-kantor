@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\PermintaanBarangNotify;
 use App\Models\Product;
 use App\Models\Semester;
+use App\Models\Setting;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -240,6 +241,7 @@ class PermintaanBarang extends Controller
 
     public function pengajuan(Request $request)
     {
+        $setting = Setting::all();
 
         $user = Submission::where('user_id', Auth()->user()->id)
             ->where('status', 'submit')
@@ -249,7 +251,7 @@ class PermintaanBarang extends Controller
             Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
 
             /* Notifikasi Email */
-            Mail::to('poltek.tegal@gmail.com')->send(new PermintaanBarangNotify($user));
+            Mail::to($setting->email)->send(new PermintaanBarangNotify($user));
         }
 
         return response()->json(['message' => 'Permintaan berhasil diajukan bagian logistik.']);

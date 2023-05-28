@@ -60,7 +60,6 @@ class SettingController extends Controller
             'owner_name' => 'required',
             'email' => 'required|email',
             'phone' => 'required|string|min:11|max:17',
-            'phone_hours' => 'required',
             'about' => 'required',
             'address' => 'nullable',
             'city' => 'nullable',
@@ -87,7 +86,8 @@ class SettingController extends Controller
             ];
         }
 
-        $data = $request->except('path_image', 'path_image_header', 'path_image_footer','pills');
+        // $data = $request->except('path_image', 'path_image_header', 'path_image_footer', 'pills');
+        $data = $request->except('path_image', 'path_image_header', 'path_image_footer', 'pills');
 
         if ($request->hasFile('path_image')) {
             if (Storage::disk('public')->exists($request->path_image)) {
@@ -112,22 +112,28 @@ class SettingController extends Controller
 
             $data['path_image_footer'] = upload('setting', $request->file('path_image_footer'), 'setting');
         }
+        $this->validate($request, $rules, [
+            'is_main.unique' => 'Akun utama sudah ada sebelumnya.'
+        ]);
+        // $validator = Validator::make($request->all(), $rules);
 
-        $validator = Validator::make($request->all(), $rules);
+        // if ($validator->fails()) {
+        //     return back()->with([
+        //         'message' => 'Pengaturan gagal tersimpan',
+        //         'error' => true
+        //     ]);
+        // }
 
-        if ($validator->fails()) {
-            back()->withErrors($validator->errors());
-            Session::flash('error', true);
-            Session::flash('message', 'Terjadi kesalahan validasi inputan');
-            return;
-        }
 
         $setting->update($data);
 
-        Session::flash('success', true);
-        Session::flash('message', 'Pengaturan berhasil disimpan.');
+        // Session::flash('success', true);
+        // Session::flash('message', 'Pengaturan berhasil disimpan.');
 
-        return redirect()->route('setting.index');
+        return back()->with([
+            'message' => 'Pengaturan berhasil diperbarui',
+            'success' => true
+        ]);
     }
 
     /**
