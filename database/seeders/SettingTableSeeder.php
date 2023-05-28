@@ -22,8 +22,8 @@ class SettingTableSeeder extends Seeder
                 'phone' => '081232323221',
                 'phone_hours' => 'Senin - Jum\'at, 08:00 s/d 16:00',
                 'owner_name' => 'Administrator',
-                'company_name' => 'W2 Charity',
-                
+                'company_name' => 'PHB Tegal',
+
                 'short_description' => '-',
                 'keyword' => '-',
                 'about' => '-',
