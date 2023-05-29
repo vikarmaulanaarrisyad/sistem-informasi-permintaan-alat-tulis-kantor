@@ -241,8 +241,6 @@ class PermintaanBarang extends Controller
 
     public function pengajuan(Request $request)
     {
-        $setting = Setting::all();
-
         $user = Submission::where('user_id', Auth()->user()->id)
             ->where('status', 'submit')
             ->get();
@@ -251,7 +249,7 @@ class PermintaanBarang extends Controller
             Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
 
             /* Notifikasi Email */
-            Mail::to($setting->email)->send(new PermintaanBarangNotify($user));
+            Mail::to('vikar.maulana.arrisyad@gmail.com')->send(new PermintaanBarangNotify($user));
         }
 
         return response()->json(['message' => 'Permintaan berhasil diajukan bagian logistik.']);

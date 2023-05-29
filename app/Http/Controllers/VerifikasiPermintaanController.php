@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifikasiBarangNotify;
 use App\Models\Product;
 use App\Models\ProductIn;
 use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class VerifikasiPermintaanController extends Controller
 {
@@ -98,8 +100,8 @@ class VerifikasiPermintaanController extends Controller
             $product->last_stock = $product->stock;
             $product->save();
 
-            /* Notifikasi Email ke user */
-            // Mail::to($userEmail)->send(new VerifikasiBarangNotify($permintaanByUser));
+            // /* Notifikasi Email ke user */
+            // Mail::to('vikar.maulana.arrisyad@gmail.com')->send(new VerifikasiBarangNotify($permintaanByUser));
         }
 
 

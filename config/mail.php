@@ -98,7 +98,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'poltek.tegal@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'poltektegal@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'POLITEKNIK HARAPAN BERSAMA TEGAL'),
     ],
 
