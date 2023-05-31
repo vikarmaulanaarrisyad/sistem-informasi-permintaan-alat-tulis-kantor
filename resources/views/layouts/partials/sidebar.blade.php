@@ -184,14 +184,14 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-sign-in-alt"></i>
                             <p>
                                 Keluar
                             </p>
                         </a>
-                    </li>
+                    </li> --}}
                 @endif
             </ul>
         </nav>

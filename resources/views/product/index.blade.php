@@ -104,7 +104,7 @@
             $('#unit').prop('disabled', false);
             $('#categories').prop('disabled', false);
             $('#price').prop('disabled', false);
-            $('#stock').prop('disabled', true);
+            $('#stock').prop('disabled', false);
 
         }
 
