@@ -17,7 +17,7 @@
                         class="img-circle elevation-2">
                 @else
                 @endif --}}
-                <img src="{{ asset('AdminLTE/dist/img/user1-128x128.jpg') }}" alt=""
+                <img src="{{ Storage::url(auth()->user()->path_image) ?? '' }}" alt="logo"
                     class="img-circle elevation-2">
             </div>
             <div class="info">

@@ -8,7 +8,8 @@
 
     <title>{{ config('app.name') }} - @yield('title')</title>
 
-    {{-- <link rel="icon" href="{{ url($setting->path_image ?? '') }}" type="image/*"> --}}
+    <link rel="icon" href="{{ Storage::url($setting->path_image_header ?? '') }}" type="image/*"
+        style="background-image: none;">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
