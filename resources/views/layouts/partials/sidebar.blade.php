@@ -118,11 +118,13 @@
                             <i class="nav-icon fas fa-check-circle"></i>
                             <p>
                                 Verifikasi Pengajuan
+                                <span class="badge badge-info right">{{ $permintaan }}</span>
                             </p>
                         </a>
                     </li>
                 @endif
 
+                {{-- @dd($permintaan); --}}
                 @if (auth()->user()->hasRole('admin'))
                     <li
                         class="nav-item {{ request()->is(['pembelian-barang', 'pengeluaran-barang']) ? 'menu-is-opening menu-open' : '' }}">

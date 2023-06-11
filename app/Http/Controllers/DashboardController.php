@@ -26,8 +26,12 @@ class DashboardController extends Controller
             $supplier = Supplier::count();
             $totalBarangMasuk = ProductIn::where('semester_id', $semester->id)->count();
             $totalBarangKeluar = Submission::where('status', 'finish')->where('semester_id', $semester->id)->count();
-            $pengajuanBelumDikonfirmasi = Submission::where('status', 'process')->where('semester_id', $semester->id)->count();
-
+            $pengajuanBelumDikonfirmasi =
+                Submission::select('user_id')
+                ->where('status', '!=', 'finish')
+                ->where('status', '!=', 'submit')
+                ->groupBy('user_id')
+                ->count('user_id');
 
             return view('dashboard.admin.index', compact([
                 'users',
