@@ -53,7 +53,7 @@
             <div id="password_confirmation">
                 <div class="form-group">
                 <label for="password_confirmation">Konfirmasi Password</label>
-                <input type="password_confirmation" name="password_confirmation" id="password_confirmation"
+                <input type="password" name="password_confirmation" id="password_confirmation"
                     class="form-control" autocomplete="off">
             </div>
             </div>
