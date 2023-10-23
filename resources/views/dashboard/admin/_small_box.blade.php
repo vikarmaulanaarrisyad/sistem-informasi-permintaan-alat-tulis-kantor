@@ -88,7 +88,7 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-red">
             <div class="inner">
-                <h3>{{ $pengajuanBelumDikonfirmasi }}</h3>
+                <h3>{{ $pengajuanBelumDikonfirmasi->count() }}</h3>
                 <p>Pengajuan belum dikonfirmasi</p>
             </div>
             <div class="icon">

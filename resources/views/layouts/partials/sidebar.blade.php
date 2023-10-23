@@ -118,7 +118,7 @@
                             <i class="nav-icon fas fa-check-circle"></i>
                             <p>
                                 Verifikasi Pengajuan
-                                <span class="badge badge-info right">{{ $permintaan }}</span>
+                                <span class="badge badge-info right">{{ $permintaan->count() }}</span>
                             </p>
                         </a>
                     </li>

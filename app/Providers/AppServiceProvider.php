@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Setting;
 use App\Models\Submission;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,14 +27,12 @@ class AppServiceProvider extends ServiceProvider
             $view->with('setting', Setting::first());
         });
         view()->composer('*', function ($view) {
-            $view->with(
-                'permintaan',
-                Submission::select('user_id')
-                    ->where('status', '!=', 'finish')
-                    ->where('status', '!=', 'submit')
-                    ->groupBy('user_id')
-                    ->count('user_id')
-            );
+            $permintaan = Submission::select('user_id', DB::raw('COUNT(*) as jumlah_pengajuan'))
+                ->whereNotIn('status', ['finish', 'submit'])
+                ->groupBy('user_id')
+                ->get();
+
+            $view->with('permintaan', $permintaan);
         });
     }
 }

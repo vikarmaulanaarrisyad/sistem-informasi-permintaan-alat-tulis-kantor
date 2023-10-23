@@ -156,10 +156,12 @@
                                     text: response.message,
                                     showConfirmButton: false,
                                     timer: 3000
+                                }).then(() => {
+                                    location.reload();
+                                    table1.ajax.reload();
+                                    $("#button-verifikasi-all").prop('disabled', true)
                                 })
                             }
-                            table1.ajax.reload();
-                            $("#button-verifikasi-all").prop('disabled', true)
                         },
                         errors: function(errors) {
                             Swal.fire({

@@ -249,7 +249,7 @@ class PermintaanBarang extends Controller
             Submission::whereIn('id', $request->ids)->update(['status' => 'process']);
 
             /* Notifikasi Email */
-            Mail::to('vikar.maulana.arrisyad@gmail.com')->send(new PermintaanBarangNotify($user));
+            // Mail::to('vikar.maulana.arrisyad@gmail.com')->send(new PermintaanBarangNotify($user));
         }
 
         return response()->json(['message' => 'Permintaan berhasil diajukan bagian logistik.']);

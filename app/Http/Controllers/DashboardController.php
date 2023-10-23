@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -27,11 +28,10 @@ class DashboardController extends Controller
             $totalBarangMasuk = ProductIn::where('semester_id', $semester->id)->count();
             $totalBarangKeluar = Submission::where('status', 'finish')->where('semester_id', $semester->id)->count();
             $pengajuanBelumDikonfirmasi =
-                Submission::select('user_id')
-                ->where('status', '!=', 'finish')
-                ->where('status', '!=', 'submit')
+                Submission::select('user_id', DB::raw('COUNT(*) as jumlah_pengajuan'))
+                ->whereNotIn('status', ['finish', 'submit'])
                 ->groupBy('user_id')
-                ->count('user_id');
+                ->get();
 
             return view('dashboard.admin.index', compact([
                 'users',
