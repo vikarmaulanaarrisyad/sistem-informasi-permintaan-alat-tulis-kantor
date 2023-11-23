@@ -9,6 +9,7 @@ use App\Models\Semester;
 use App\Models\Submission;
 use App\Models\Supplier;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,8 @@ class DashboardController extends Controller
         $semester = $this->semesterAktif();
 
         if (Auth::user()->hasRole('admin')) {
+
+            $dateNow = date('Y-m-d');
 
             $users = User::where('role_id', 2)->count();
             $kategori = Category::count();
@@ -33,6 +36,14 @@ class DashboardController extends Controller
                 ->groupBy('user_id')
                 ->get();
 
+            $totalPengajuanHariIni = Submission::whereNotIn('status',['finish','submit'])
+                ->whereDate('date', $dateNow)->get()->count();
+
+            $totalBarangMasukHariIni = ProductIn::whereDate('date', $dateNow)->get()->count();
+
+            $totalBarangKeluarHariIni = Submission::where('status','finish')
+                ->whereDate('date', $dateNow)->get()->count();
+
             return view('dashboard.admin.index', compact([
                 'users',
                 'kategori',
@@ -41,6 +52,9 @@ class DashboardController extends Controller
                 'totalBarangMasuk',
                 'totalBarangKeluar',
                 'pengajuanBelumDikonfirmasi',
+                'totalPengajuanHariIni',
+                'totalBarangMasukHariIni',
+                'totalBarangKeluarHariIni'
             ]));
         } else {
 

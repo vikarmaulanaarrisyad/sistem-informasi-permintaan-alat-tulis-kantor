@@ -9,5 +9,5 @@
 
 @section('content')
     @include('dashboard.admin._small_box')
-    
+    @include('dashboard.admin._stok')
 @endsection
